@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="医学统计学选择题练习：乱序、自动判分、正确答案与解析。">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#f3f0e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="统计学练习">
+  <title>医学统计学 · 选择题练习</title>
+  <style>:root {
+  color-scheme: light;
+  --bg: #f3f0e8;
+  --bg-deep: #e9e2d5;
+  --card: rgba(255, 255, 255, 0.86);
+  --card-solid: #fffdf8;
+  --text: #1d2923;
+  --muted: #69766e;
+  --line: rgba(29, 41, 35, 0.12);
+  --line-strong: rgba(29, 41, 35, 0.2);
+  --accent: #176b52;
+  --accent-2: #2e9b77;
+  --accent-soft: rgba(23, 107, 82, 0.09);
+  --correct: #137a52;
+  --correct-bg: #e7f4ed;
+  --wrong: #b13a2d;
+  --wrong-bg: #fbece8;
+  --shadow: 0 24px 70px rgba(40, 45, 38, 0.12);
+  --shadow-soft: 0 8px 24px rgba(40, 45, 38, 0.07);
+  --radius: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #101613;
+    --bg-deep: #0a0f0d;
+    --card: rgba(23, 32, 28, 0.9);
+    --card-solid: #18211d;
+    --text: #e8eee9;
+    --muted: #9aa89f;
+    --line: rgba(232, 238, 233, 0.13);
+    --line-strong: rgba(232, 238, 233, 0.22);
+    --accent: #71d3ae;
+    --accent-2: #98e5c6;
+    --accent-soft: rgba(113, 211, 174, 0.11);
+    --correct: #83e2b9;
+    --correct-bg: rgba(24, 83, 61, 0.4);
+    --wrong: #ff9f8e;
+    --wrong-bg: rgba(112, 40, 31, 0.42);
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+    --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(46, 155, 119, 0.16), transparent 34rem),
+    radial-gradient(circle at 95% 12%, rgba(196, 152, 78, 0.12), transparent 30rem),
+    linear-gradient(145deg, var(--bg), var(--bg-deep));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.32;
+  background-image:
+    linear-gradient(rgba(29, 41, 35, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 41, 35, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+.shell {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  padding: 18px 20px 28px;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand-mark {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent), #0c4d3a);
+  box-shadow: 0 8px 20px rgba(23, 107, 82, 0.22);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.brand p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 11px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: border-color 0.18s ease, color 0.18s ease,
+    background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn:focus-visible,
+.option:focus-visible,
+.sheet-cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(23, 107, 82, 0.22);
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: #0f5b45;
+  color: #fff;
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+.meta-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 4px 0 8px;
+}
+
+.pill {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: var(--card);
+  color: var(--muted);
+  font-size: 10.5px;
+  line-height: 1.3;
+}
+
+.pill strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.stats {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  margin-bottom: 8px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+
+.stat {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  justify-content: center;
+  min-width: 0;
+  gap: 6px;
+  padding: 7px 6px;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  box-shadow: none;
+}
+
+.stat:first-child {
+  border-left: 0;
+}
+
+.stat span {
+  display: block;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat small {
+  display: block;
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.stat.correct span {
+  color: var(--correct);
+}
+
+.stat.wrong span {
+  color: var(--wrong);
+}
+
+.progress-track {
+  height: 6px;
+  margin: 0 0 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width 0.3s ease;
+}
+
+.question-card {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(16px, 2.4vw, 22px);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.q-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.q-index {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.q-origin {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 3px 7px;
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.q-text {
+  margin: 0 0 14px;
+  font-family: "Songti SC", "Noto Serif SC", "STSong", Georgia, serif;
+  font-size: clamp(17px, 1.8vw, 20px);
+  font-weight: 600;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.options {
+  display: grid;
+  gap: 6px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 9px 11px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease,
+    transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+.option.selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.option.is-correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+}
+
+.option.is-wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+}
+
+.option:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.option-key {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--card-solid);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.option.selected .option-key {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.option.is-correct .option-key {
+  border-color: var(--correct);
+  background: var(--correct);
+  color: #fff;
+}
+
+.option.is-wrong .option-key {
+  border-color: var(--wrong);
+  background: var(--wrong);
+  color: #fff;
+}
+
+.option-text {
+  padding-top: 2px;
+  white-space: pre-wrap;
+}
+
+.feedback {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+
+.feedback.correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+}
+
+.feedback.wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+}
+
+.feedback-title {
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.feedback.correct .feedback-title {
+  color: var(--correct);
+}
+
+.feedback.wrong .feedback-title {
+  color: var(--wrong);
+}
+
+.answer-line {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.answer-line strong {
+  color: var(--accent);
+}
+
+.explanation {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.q-text,
+.option-text,
+.answer-line,
+.explanation {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.actions .spacer {
+  flex: 1;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.completion {
+  padding: 26px 10px 10px;
+  text-align: center;
+}
+
+.completion .mark {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 18px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 36px;
+}
+
+.completion h2 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.completion p {
+  margin: 0 0 22px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.completion .actions {
+  justify-content: center;
+}
+
+.foot {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.75;
+  text-align: center;
+}
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(5, 12, 9, 0.58);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+
+.sheet[hidden] {
+  display: none;
+}
+
+.sheet-panel {
+  width: min(900px, 100%);
+  max-height: min(82vh, 780px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 22px;
+  background: var(--card-solid);
+  box-shadow: var(--shadow);
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sheet-head h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  border-radius: 3px;
+  vertical-align: -1px;
+}
+
+.legend .l-correct {
+  background: var(--correct);
+}
+
+.legend .l-wrong {
+  background: var(--wrong);
+}
+
+.legend .l-unanswered {
+  border: 1px solid var(--line-strong);
+}
+
+.sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 7px;
+}
+
+.sheet-cell {
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.sheet-cell:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.sheet-cell.correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+  color: var(--correct);
+}
+
+.sheet-cell.wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+  color: var(--wrong);
+}
+
+.sheet-cell.current {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 60;
+  transform: translate(-50%, 18px);
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 720px) {
+  .shell {
+    padding: 14px 12px 24px;
+  }
+
+  .meta-strip {
+    display: none;
+  }
+
+  .topbar {
+    display: block;
+  }
+
+  .toolbar {
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+
+  .stat {
+    gap: 3px;
+    padding: 6px 3px;
+  }
+
+  .stat span {
+    font-size: 18px;
+  }
+
+  .stat small {
+    font-size: 9px;
+  }
+
+  .question-card {
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .q-text {
+    font-size: 17px;
+  }
+
+  .option {
+    padding: 8px 9px;
+  }
+
+  .actions .hint {
+    flex-basis: 100%;
+  }
+
+  .sheet {
+    padding: 10px;
+  }
+
+  .sheet-panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    font-size: 23px;
+  }
+
+  .btn {
+    padding: 7px 10px;
+    font-size: 11.5px;
+  }
+
+  .stat {
+    padding: 6px 2px;
+  }
+
+  .stat span {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">∑</div>
+        <div>
+          <h1>医学统计学 · 选择题练习</h1>
+          <p>乱序练习 · 自动判分 · <span id="totalLabel">399</span> 题</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button type="button" class="btn ghost" id="sheetBtn">答题卡</button>
+        <button type="button" class="btn ghost" id="shuffleBtn">重新打乱</button>
+        <button type="button" class="btn ghost" id="resetBtn">重置</button>
+      </div>
+    </header>
+
+    <div class="meta-strip" aria-label="题库说明">
+      <span class="pill">原题 <strong id="originalLabel">435</strong> 道</span>
+      <span class="pill">保留 <strong id="totalLabelMeta">399</strong> 道</span>
+      <span class="pill">已剔除 <strong id="removedLabel">36</strong> 道</span>
+      <span class="pill">乱序出题</span>
+      <span class="pill">重复题已合并</span>
+    </div>
+
+    <section class="stats" aria-label="答题统计">
+      <div class="stat"><span id="statAnswered">0</span><small>已答</small></div>
+      <div class="stat correct"><span id="statCorrect">0</span><small>答对</small></div>
+      <div class="stat wrong"><span id="statWrong">0</span><small>答错</small></div>
+      <div class="stat"><span id="statAccuracy">—</span><small>正确率</small></div>
+    </section>
+
+    <div class="progress-track" id="progressTrack" role="progressbar" aria-label="答题进度"
+      aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <main class="question-card" id="questionCard" aria-live="polite">
+      <p class="q-text">正在准备题库…</p>
+    </main>
+  </div>
+
+  <div class="sheet" id="sheet" hidden>
+    <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="答题卡">
+      <div class="sheet-head">
+        <h3>答题卡</h3>
+        <button type="button" class="btn ghost" id="closeSheet">关闭</button>
+      </div>
+      <div class="legend">
+        <span><i class="l-correct"></i>答对</span>
+        <span><i class="l-wrong"></i>答错</span>
+        <span><i class="l-unanswered"></i>未答</span>
+      </div>
+      <div class="sheet-grid" id="sheetGrid"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    window.__QUIZ_META__ = {
+      original: 435,
+      kept: 399,
+      topicRemoved: 28,
+      duplicateRemoved: 8,
+      removed: 36
+    };
+    window.__QUESTIONS__ = [{"id":1,"q":"下面的变量中,属于分类变量的是:","options":[{"key":"A","text":"脉搏"},{"key":"B","text":"血型"},{"key":"C","text":"肺活量"},{"key":"D","text":"红细胞计数"},{"key":"E","text":"血压"}],"answer":"B","explanation":"根据分类变量(定性变量)的定义"},{"id":2,"q":"下面的变量中,属于数值变量的是:","options":[{"key":"A","text":"性别"},{"key":"B","text":"体重"},{"key":"C","text":"血型"},{"key":"D","text":"职业"},{"key":"E","text":"民族"}],"answer":"B","explanation":"根据计量资料(定量资料)的定义"},{"id":3,"q":"下列有关个人基本信息的指标,其中属于有序分类变量的是:","options":[{"key":"A","text":"学历"},{"key":"B","text":"民族"},{"key":"C","text":"职业"},{"key":"D","text":"血型"},{"key":"E","text":"身高"}],"answer":"A","explanation":"根据等级变量(有序分类变量资料)的定义"},{"id":4,"q":"若要通过样本作统计推断,样本应是:","options":[{"key":"A","text":"总统中典型的一部分"},{"key":"B","text":"总体中任一部分"},{"key":"C","text":"总体中随机抽取的一部分"},{"key":"D","text":"总体中信息明确的一部分"},{"key":"E","text":"总体中选取的有意义的一部分"}],"answer":"C","explanation":"参考样本的概念"},{"id":5,"q":"统计量是指:","options":[{"key":"A","text":"是统计总体数据得到的量"},{"key":"B","text":"反映总体统计特征的量"},{"key":"C","text":"是根据总体中的全部数据计算出的统计指标"},{"key":"D","text":"是用参数估计出来的量"},{"key":"E","text":"是由样本数据计算出来的统计指标"}],"answer":"E","explanation":"参考统计量的定义"},{"id":6,"q":"下列关于概率的说法,错误的是:","options":[{"key":"A","text":"通常用P表示"},{"key":"B","text":"大小在0~1之间"},{"key":"C","text":"某事件发生的频率即概率"},{"key":"D","text":"在实际工作中,概率是难以获得的"},{"key":"E","text":"某事件发生的概率P≤0.05时,称为小概率事件"}],"answer":"C","explanation":"参考概率与频率是两个概念,我们可以根据频率估计概率,但是前提是计算的频率相对稳定,即其分母要足够大。"},{"id":7,"q":"减少抽样误差的有效途径是:","options":[{"key":"A","text":"避免系统误差"},{"key":"B","text":"控制随机测量误差"},{"key":"C","text":"增大样本含量"},{"key":"D","text":"减少样本含量"},{"key":"E","text":"以上都不对"}],"answer":"C","explanation":"参考抽样误差的概念及样本与总体的关系"},{"id":9,"q":"必然事件的概率是指:","options":[{"key":"A","text":"P≤0.05"},{"key":"B","text":"P>0.05"},{"key":"C","text":"P=0.00"},{"key":"D","text":"P>0.10"},{"key":"E","text":"P=1.00"}],"answer":"E","explanation":"必然事件是指一定发生的事件,所以概率为1"},{"id":10,"q":"职业属于下列哪类资料:","options":[{"key":"A","text":"有序分类资料"},{"key":"B","text":"计量资料"},{"key":"C","text":"等级资料"},{"key":"D","text":"圆形资料"},{"key":"E","text":"无序分类资料"}],"answer":"E","explanation":"各种职业只有质的不同,且无顺序"},{"id":11,"q":"下列属于等级资料的指标是:","options":[{"key":"A","text":"教师的职称"},{"key":"B","text":"脉搏"},{"key":"C","text":"体重"},{"key":"D","text":"地区"},{"key":"E","text":"性别"}],"answer":"A","explanation":"职称是有顺序的"},{"id":12,"q":"脉搏属于下列哪类资料:","options":[{"key":"A","text":"等级资料"},{"key":"B","text":"无序分类资料"},{"key":"C","text":"分类资料"},{"key":"D","text":"计量资料"},{"key":"E","text":"圆形资料"}],"answer":"D","explanation":"离散型定量资料"},{"id":13,"q":"从某学校中随机抽取一个班调查血压状况,则每个学生血压间的差别被称为:","options":[{"key":"A","text":"过失误差"},{"key":"B","text":"系统误差"},{"key":"C","text":"测量误差"},{"key":"D","text":"抽样误差"},{"key":"E","text":"个体差异"}],"answer":"E","explanation":"每个学生之间的差异属于个体差异"},{"id":14,"q":"参数是指:","options":[{"key":"A","text":"由样本计算的均数"},{"key":"B","text":"由样本计算的率"},{"key":"C","text":"由两个样本计算的指标"},{"key":"D","text":"由样本与总体共同计算的指标"},{"key":"E","text":"由总体计算的指标"}],"answer":"E","explanation":"参数的定义"},{"id":15,"q":"下列属于分类资料的指标是:","options":[{"key":"A","text":"体重"},{"key":"B","text":"血型"},{"key":"C","text":"血压"},{"key":"D","text":"身高"},{"key":"E","text":"学历"}],"answer":"B","explanation":"血型是分类资料"},{"id":16,"q":"引起抽样误差的根本原因是:","options":[{"key":"A","text":"后天因素"},{"key":"B","text":"营养状况"},{"key":"C","text":"健康状况"},{"key":"D","text":"疾病状况"},{"key":"E","text":"个体变异"}],"answer":"E","explanation":"个体变异引起的抽取样本的差异"},{"id":17,"q":"不可能事件是指:","options":[{"key":"A","text":"飞机出现事故"},{"key":"B","text":"太阳每天从东方落下"},{"key":"C","text":"考试及格"},{"key":"D","text":"四胞胎的出生"},{"key":"E","text":"单胞胎的出生"}],"answer":"B","explanation":"太阳由于地球自转,总是东升西落"},{"id":18,"q":"属于分类资料的指标是:","options":[{"key":"A","text":"脉搏"},{"key":"B","text":"民族"},{"key":"C","text":"体重"},{"key":"D","text":"血压"},{"key":"E","text":"职称"}],"answer":"B","explanation":"民族无顺序,且某个个体只能属于每一类"},{"id":19,"q":"医院科室分为内外妇儿等科,则科室变量属于下列哪类资料:","options":[{"key":"A","text":"有序分类资料"},{"key":"B","text":"分类资料"},{"key":"C","text":"等级资料"},{"key":"D","text":"圆形资料"},{"key":"E","text":"计量资料"}],"answer":"B","explanation":"科室是无顺序的,且是分类的"},{"id":20,"q":"以整个国家为总体,下列哪些指标是参数,而不是统计量:","options":[{"key":"A","text":"某省人口数"},{"key":"B","text":"某医院职工人数"},{"key":"C","text":"全国男女性别比"},{"key":"D","text":"某乡家庭个数"},{"key":"E","text":"某市已婚人口数"}],"answer":"C","explanation":"参数是指总体的指标;统计量是指样本的指标。"},{"id":21,"q":"从一个正态分布的总体中随机抽样,样本均数与总体均数的差别被称为:","options":[{"key":"A","text":"系统误差"},{"key":"B","text":"测量误差"},{"key":"C","text":"个体差异"},{"key":"D","text":"抽样误差"},{"key":"E","text":"过失误差"}],"answer":"D","explanation":"抽样误差的定义"},{"id":22,"q":"小概率事件的概率是:","options":[{"key":"A","text":"P>0.05"},{"key":"B","text":"P=0.20"},{"key":"C","text":"P≤0.10"},{"key":"D","text":"P>0.10"},{"key":"E","text":"P≤0.05"}],"answer":"E","explanation":"小概率事件的定义"},{"id":23,"q":"百分制学习成绩属于下列哪类资料:","options":[{"key":"A","text":"等级资料"},{"key":"B","text":"有序分类资料"},{"key":"C","text":"分类资料"},{"key":"D","text":"圆形资料"},{"key":"E","text":"计量资料"}],"answer":"E","explanation":"连续的定量资料"},{"id":24,"q":"统计工作的四个基本步骤中关键的是:","options":[{"key":"A","text":"统计描述"},{"key":"B","text":"搜集资料"},{"key":"C","text":"整理资料"},{"key":"D","text":"统计设计"},{"key":"E","text":"分析资料"}],"answer":"D","explanation":"设计是最关键最重要的一步"},{"id":26,"q":"单因素方差分析将总变异分解为:","options":[{"key":"A","text":"组间变异、组内变异"},{"key":"B","text":"区组变异、误差变异"},{"key":"C","text":"标准差、标准误变异"},{"key":"D","text":"抽样变异、随机测量变异"},{"key":"E","text":"组内变异及误差变异"}],"answer":"A","explanation":""},{"id":27,"q":"完全随机设计资料的方差分析中的组间均方表示:","options":[{"key":"A","text":"表示抽样误差大小"},{"key":"B","text":"表示某处理因素的效应作用大小"},{"key":"C","text":"表示N个数据的离散程度"},{"key":"D","text":"表示某处理因素的效应和随机误差两者综合影响的结果"},{"key":"E","text":"表示随机因素的效应大小"}],"answer":"D","explanation":""},{"id":28,"q":"完全随机设计资料的方差分析中,必然有:","options":[{"key":"A","text":"SS组间>SS组内"},{"key":"B","text":"MS组间<MS组内"},{"key":"C","text":"MS总=MS组间+MS组内"},{"key":"D","text":"SS总=SS组间+SS组内"},{"key":"E","text":"ν组间>ν组内"}],"answer":"D","explanation":""},{"id":29,"q":"完全随机设计的方差分析中,当F>F0.05,ν,P<0.05时,结论为可以认为:","options":[{"key":"A","text":"各样本均数全相等"},{"key":"B","text":"各样本均数不全相等"},{"key":"C","text":"各总体均数全相等"},{"key":"D","text":"各总体均数全不相等"},{"key":"E","text":"至少有两个总体均数不等"}],"answer":"E","explanation":""},{"id":30,"q":"单样本方差分析中,当F>F0.01,ν,P<0.01时,结论为可以认为:","options":[{"key":"A","text":"各样本均数全相等"},{"key":"B","text":"各样本均数不全相等"},{"key":"C","text":"各总体均数不全相等"},{"key":"D","text":"各总体均数全不相等"},{"key":"E","text":"至少有两个样本均数不等"}],"answer":"C","explanation":""},{"id":31,"q":"随机区组设计的方差分析中,v区组等于:","options":[{"key":"A","text":"v总-v误差"},{"key":"B","text":"v总-v误处理"},{"key":"C","text":"v处理-v误差"},{"key":"D","text":"v总- v处理+v误差"},{"key":"E","text":"v总- v处理-v误差"}],"answer":"E","explanation":""},{"id":32,"q":"在相同自由度(v1,v2)及检验水准α时,方差分析的界值比方差齐性检验的界值:","options":[{"key":"A","text":"大"},{"key":"B","text":"小"},{"key":"C","text":"相等"},{"key":"D","text":"前者是后者的两倍"},{"key":"E","text":"不一定"}],"answer":"B","explanation":""},{"id":33,"q":"不能进行方差齐性检验的方法是:","options":[{"key":"A","text":"F检验"},{"key":"B","text":"Bartlett检验"},{"key":"C","text":"Levene检验"},{"key":"D","text":"Hartley检验"},{"key":"E","text":"t检验"}],"answer":"E","explanation":""},{"id":35,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"A","explanation":""},{"id":36,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。该研究数据分析需要满足的条件不包括:","options":[{"key":"A","text":"各组数据代表的总体方差要齐性"},{"key":"B","text":"各组数据代表的总体数据均服从正态分布"},{"key":"C","text":"各组数据代表的总体方差要相等"},{"key":"D","text":"各组数据代表的总体方差越小越好"},{"key":"E","text":"各组数据是随机样本"}],"answer":"D","explanation":"随机、正态、齐性"},{"id":37,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。其检验方法是:","options":[{"key":"A","text":"配对t检验"},{"key":"B","text":"方差齐性检验"},{"key":"C","text":"成组Z检验"},{"key":"D","text":"单样本t检验"},{"key":"E","text":"多样本均数比较的 F、 检验"}],"answer":"E","explanation":""},{"id":38,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。假设检验的原假设是:","options":[{"key":"A","text":"H0:μ1=μ2=μ3=μ4"},{"key":"B","text":"H1:μ1≠μ2≠μ3≠μ4"},{"key":"C","text":"H1:各样本均数不全相等"},{"key":"D","text":"H0:各样本均数不全相等"},{"key":"E","text":"H0:至少有2个总体均数不相等"}],"answer":"A","explanation":""},{"id":39,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。备择假设是:","options":[{"key":"A","text":"H0:μ1=μ2=μ3=μ4"},{"key":"B","text":"H1:μ1≠μ2≠μ3≠μ4"},{"key":"C","text":"H1:各样本均数不全相等"},{"key":"D","text":"H0:各总体均数不全相等"},{"key":"E","text":"H1:至少有2个总体均数不相等"}],"answer":"E","explanation":""},{"id":40,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。假设检验其计算的检验统计量是:","options":[{"key":"A","text":"T"},{"key":"B","text":"Z"},{"key":"C","text":"F"},{"key":"D","text":"CI"},{"key":"E","text":"H"}],"answer":"C","explanation":""},{"id":41,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。假设检验中组间自由度是:","options":[{"key":"A","text":"32"},{"key":"B","text":"31"},{"key":"C","text":"3"},{"key":"D","text":"28"},{"key":"E","text":"不能计算"}],"answer":"C","explanation":"k-1"},{"id":42,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。假设检验中对变异分解说法正确的是:","options":[{"key":"A","text":"SS组间>SS组内"},{"key":"B","text":"MS组间<MS组内"},{"key":"C","text":"MS总=MS组间+MS组内"},{"key":"D","text":"SS总=SS组间+SS组内"},{"key":"E","text":"ν组间>ν组内"}],"answer":"D","explanation":""},{"id":43,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异。假设检验中组内自由度是:","options":[{"key":"A","text":"32"},{"key":"B","text":"31"},{"key":"C","text":"3"},{"key":"D","text":"28"},{"key":"E","text":"不能计算"}],"answer":"D","explanation":"N-k"},{"id":44,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异,假设检验计算的检验统计量得到的P越小越说明:","options":[{"key":"A","text":"各组的IL-6差别越大"},{"key":"B","text":"各组代表的总体IL-6差别越大"},{"key":"C","text":"越有理由认为各组代表的总体IL-6不全相同"},{"key":"D","text":"越有理由认为这32只小白鼠的IL-6相同"},{"key":"E","text":"越有理由认为各组代表的总体IL-6全不相同"}],"answer":"C","explanation":""},{"id":45,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异,P<0.05,说明:","options":[{"key":"A","text":"不拒绝H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":46,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异,若P>0.05,说明:","options":[{"key":"A","text":"认为各组的IL-6差别越大"},{"key":"B","text":"可认为各组代表的总体IL-6差别越大"},{"key":"C","text":"还不能认为各组代表的总体IL-6不全相同"},{"key":"D","text":"还不能认为这32只小白鼠的IL-6相同"},{"key":"E","text":"可以认为各组代表的总体IL-6全不相同"}],"answer":"C","explanation":""},{"id":47,"q":"某研究者随机抽取32只小白鼠,随机等分为4组,分别给予VB+鱼油、VB、鱼油、安慰剂,并经过一段时间后,测其IL-6(ng/ml),假设已满足检验方法的条件,比较各组IL-6有无差异,若P<0.05,做两两比较,下列不属于两两比较方法的是:","options":[{"key":"A","text":"LSD-t"},{"key":"B","text":"SNK-q"},{"key":"C","text":"t检验"},{"key":"D","text":"Bonferroni"},{"key":"E","text":"Dunnett-t"}],"answer":"C","explanation":""},{"id":49,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"A","explanation":""},{"id":50,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。该研究数据分析需要满足的条件不包括:","options":[{"key":"A","text":"各组数据代表的总体方差要齐性"},{"key":"B","text":"各组数据代表的总体数据均服从正态分布"},{"key":"C","text":"各组数据代表的总体方差要相等"},{"key":"D","text":"各组数据代表的总体方差越小越好"},{"key":"E","text":"各组数据是随机样本"}],"answer":"D","explanation":"随机、正态、齐性"},{"id":51,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。其检验方法是:","options":[{"key":"A","text":"配对t检验"},{"key":"B","text":"随机区组设计的方差分析"},{"key":"C","text":"成组t检验"},{"key":"D","text":"完全随机设计的方差分析"},{"key":"E","text":"多样本均数比较的 F、 检验"}],"answer":"B","explanation":""},{"id":52,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。对假设检验的原假设说法正确的是:","options":[{"key":"A","text":"区组H0:μ1=μ2=μ3=μ4"},{"key":"B","text":"处理组H1:μ1≠μ2≠μ3≠μ4"},{"key":"C","text":"区组H1:各样本均数不全相等"},{"key":"D","text":"处理组H0:各样本均数不全相等"},{"key":"E","text":"处理组H0:μ1=μ2=μ3=μ4"}],"answer":"E","explanation":""},{"id":53,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。备择假设是:","options":[{"key":"A","text":"处理组H0:μ1=μ2=μ3=μ4"},{"key":"B","text":"区组H1:μ1≠μ2≠μ3≠μ4"},{"key":"C","text":"区组H1:各样本均数不全相等"},{"key":"D","text":"处理组H0:各总体均数不全相等"},{"key":"E","text":"区组H1:至少有2个总体均数不相等"}],"answer":"E","explanation":""},{"id":54,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。假设检验其计算的检验统计量是:","options":[{"key":"A","text":"T"},{"key":"B","text":"Z"},{"key":"C","text":"F"},{"key":"D","text":"CI"},{"key":"E","text":"H"}],"answer":"C","explanation":""},{"id":55,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。假设检验其计算的检验统计量是:IL-6有无差异。假设检验中对变异分解说法正确的是:","options":[{"key":"A","text":"SS处理组>SS区组"},{"key":"B","text":"MS处理组<MS区组"},{"key":"C","text":"MS总=MS处理组+MS区组+MS误差"},{"key":"D","text":"SS总=SS处理组+SS区组+SS误差"},{"key":"E","text":"ν组间>ν组内"}],"answer":"D","explanation":""},{"id":56,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。假设检验中SS组间对应的自由度是:","options":[{"key":"A","text":"12"},{"key":"B","text":"3"},{"key":"C","text":"4"},{"key":"D","text":"11"},{"key":"E","text":"2"}],"answer":"B","explanation":"k-1"},{"id":57,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。假设检验中SS区组对应的自由度是:","options":[{"key":"A","text":"11"},{"key":"B","text":"2"},{"key":"C","text":"3"},{"key":"D","text":"4"},{"key":"E","text":"12"}],"answer":"B","explanation":"b-1"},{"id":58,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。假设检验中SS误差对应的自由度是:","options":[{"key":"A","text":"11"},{"key":"B","text":"1"},{"key":"C","text":"3"},{"key":"D","text":"6"},{"key":"E","text":"5"}],"answer":"D","explanation":"N-k-b+1"},{"id":59,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。假设检验得到处理组间的P越小说明:","options":[{"key":"A","text":"各处理组的TC差别越大"},{"key":"B","text":"各处理组代表的总体TC差别越大"},{"key":"C","text":"越有理由认为各处理组代表的总体TC不全相同"},{"key":"D","text":"越有理由认为这12只小白鼠的TC相同"},{"key":"E","text":"越有理由认为各处理组代表的总体TC全不相同"}],"answer":"C","explanation":""},{"id":60,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。假设检验得到区组间的P越小说明:","options":[{"key":"A","text":"各区组的TC差别越大"},{"key":"B","text":"各区组代表的总体TC差别越大"},{"key":"C","text":"越有理由认为各区组代表的总体TC不全相同"},{"key":"D","text":"越有理由认为这12只小白鼠的TC相同"},{"key":"E","text":"越有理由认为各区组代表的总体TC全不相同"}],"answer":"C","explanation":""},{"id":61,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各处理组间TC有无差异,P<0.05,说明:","options":[{"key":"A","text":"不拒绝H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":62,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各处理组间TC有无差异,P<0.05,说明:","options":[{"key":"A","text":"可以认为各处理间TC的总体均数不全相同"},{"key":"B","text":"还不能认为各处理间TC的总体均数不全相同"},{"key":"C","text":"可以认为各处理间TC的总体均数相同"},{"key":"D","text":"可以认为各处理间TC的总体均数全不相同"},{"key":"E","text":"还不能认为各处理间TC的总体均数全不相同"}],"answer":"A","explanation":""},{"id":63,"q":"某研究者从3个不同品种中,均随机抽取4只小白鼠,并将其随机分配到VB组、鱼油组、安慰剂组、空白对照组,并经过一段时间后,测其TC(mmol/L),假设已满足检验方法的条件,比较各组TC有无差异。若各处理组间假设检验得到P>0.05,说明:","options":[{"key":"A","text":"可以认为各处理间TC的总体均数不全相同"},{"key":"B","text":"还不能认为各处理间TC的总体均数不全相同"},{"key":"C","text":"可以认为各处理间TC的总体均数不同"},{"key":"D","text":"可以认为各处理间TC的总体均数全不相同"},{"key":"E","text":"还不能认为各处理间TC的总体均数全不相同"}],"answer":"B","explanation":""},{"id":65,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"n> 两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"A","explanation":"血红蛋白含量是连续型定量资料"},{"id":66,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?该研究数据分析需要满足的条件:","options":[{"key":"A","text":"数据要方差齐性"},{"key":"B","text":"数据要服从正态分布"},{"key":"C","text":"数据离散度要小"},{"key":"D","text":"数据越集中越好"},{"key":"E","text":"样本方差要小于总体方差"}],"answer":"B","explanation":"服从正态分布"},{"id":67,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若要对研究数据进行分析,检验方法是:","options":[{"key":"A","text":"配对t检验"},{"key":"B","text":"两样本t检验"},{"key":"C","text":"成组Z检验"},{"key":"D","text":"单样本t检验"},{"key":"E","text":"样本均数与总体均数比较的Z检验"}],"answer":"D","explanation":"总体标准差未知,样本含量较小,根据设计类型采用单样本t检验"},{"id":68,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若对研究数据进行假设检验,原假设是:","options":[{"key":"A","text":"H0:μ=μ0=140g/L"},{"key":"B","text":"H1:μ≠μ0=140g/L"},{"key":"C","text":"H1:μ<μ0=140g/L"},{"key":"D","text":"H0:μ≠μ0=140g/L"},{"key":"E","text":"H0:μ>μ0=140g/L"}],"answer":"A","explanation":""},{"id":69,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若要对研究数据进行假设检验,备择假设是:","options":[{"key":"A","text":"H0:μ=μ0=140g/L"},{"key":"B","text":"H1:μ≠μ0=140g/L"},{"key":"C","text":"H1:μ<μ0=140g/L"},{"key":"D","text":"H0:μ≠μ0=140g/L"},{"key":"E","text":"H1:μ>μ0=140g/L"}],"answer":"C","explanation":""},{"id":70,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若要对研究数据进行假设检验,检验水准默认是:","options":[{"key":"A","text":"0.05"},{"key":"B","text":"0.01"},{"key":"C","text":"0.10"},{"key":"D","text":"0.02"},{"key":"E","text":"没有默认值"}],"answer":"A","explanation":""},{"id":71,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若要对研究数据进行分析,计算的检验统计量值是:","options":[{"key":"A","text":"3.5"},{"key":"B","text":"0.5"},{"key":"C","text":"3"},{"key":"D","text":"0.083"},{"key":"E","text":"不能计算"}],"answer":"C","explanation":"单样本t检验公式计算出3"},{"id":72,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若对研究数据假设检验,统计量对应的自由度是:","options":[{"key":"A","text":"36"},{"key":"B","text":"33"},{"key":"C","text":"35"},{"key":"D","text":"140"},{"key":"E","text":"不能计算"}],"answer":"C","explanation":"n-1"},{"id":73,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若要对研究数据进行分析,得到的P值:","options":[{"key":"A","text":"0.05<p<0.10"},{"key":"B","text":"0.01<p<0.05"},{"key":"C","text":"0.005<p<0.01"},{"key":"D","text":"0.0025<p<0.005"},{"key":"E","text":"不能计算"}],"answer":"D","explanation":"根据自由度及计算出的统计量,查界值表"},{"id":74,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?假设检验计算的检验统计量得到的P越小越说明:","options":[{"key":"A","text":"36名铅作业男性工人血红蛋白的含量差别越大"},{"key":"B","text":"铅作业男性工人血红蛋白的收缩压与正常男性工人血红蛋白含量差别越大"},{"key":"C","text":"越有理由认为36名铅作业男性工人血红蛋白的收缩压与正常男性工人血红蛋白含量差别越大"},{"key":"D","text":"越有理由认为铅作业男性工人血红蛋白的收缩压与正常男性工人血红蛋白含量相同"},{"key":"E","text":"越有理由认为铅作业男性工人血红蛋白的收缩压与正常男性工人血红蛋白含量不同"}],"answer":"E","explanation":"根据自由度及计算出的统计量,查界值表"},{"id":75,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若要对研究数据假设检验,统计学结论是:","options":[{"key":"A","text":"不拒绝H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":76,"q":"某医生测量了36名从事铅作业男性工人的血红蛋白含量为130±20g/L。假设血红蛋白含量服从正态分布,试估计铅作业男性工人血红蛋白含量是否低于正常人的血红蛋白含量(140g/L)?若要对研究数据假设检验,专业结论是:","options":[{"key":"A","text":"可认为铅作业男性工人血红蛋白含量高于正常人的血红蛋白含量"},{"key":"B","text":"可认为铅作业男性工人血红蛋白含量低于正常人的血红蛋白含量"},{"key":"C","text":"还不能认为铅作业男性工人血红蛋白含量与正常人的血红蛋白含量相同"},{"key":"D","text":"还不能认为铅作业男性工人血红蛋白含量低于正常人的血红蛋白含量"},{"key":"E","text":"可以认为铅作业男性工人血红蛋白含量与正常人的血红蛋白含量相同"}],"answer":"B","explanation":""},{"id":78,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"A","explanation":""},{"id":79,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?该研究数据分析需要满足的条件:","options":[{"key":"A","text":"两种体位数据要方差齐性"},{"key":"B","text":"两种体位数据均服从正态分布"},{"key":"C","text":"两种体位数据差服从正态分布"},{"key":"D","text":"两种体位离散度越小越好"},{"key":"E","text":"样本方差要小于总体方差"}],"answer":"C","explanation":"服从正态分布"},{"id":80,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设已满足检验方法的条件,其检验方法是:","options":[{"key":"A","text":"配对t检验"},{"key":"B","text":"两样本t检验"},{"key":"C","text":"成组Z检验"},{"key":"D","text":"单样本t检验"},{"key":"E","text":"样本均数与总体均数比较的Z检验"}],"answer":"A","explanation":""},{"id":81,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设检验的原假设是:","options":[{"key":"A","text":"H0:μd=0"},{"key":"B","text":"H1:μ≠μ0"},{"key":"C","text":"H1:μd<μ"},{"key":"D","text":"H0:μ≠μ0"},{"key":"E","text":"H0:μd>0"}],"answer":"A","explanation":""},{"id":82,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设已满足检验方法的条件,其检验方法的备择假设是:","options":[{"key":"A","text":"H0:μd=0"},{"key":"B","text":"H1:μ≠μ0"},{"key":"C","text":"H1:μd≠0"},{"key":"D","text":"H0:μ≠μ0"},{"key":"E","text":"H0:μd>0"}],"answer":"C","explanation":""},{"id":83,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?若进行假设检验,检验水准默认是:","options":[{"key":"A","text":"0.05"},{"key":"B","text":"0.01"},{"key":"C","text":"0.10"},{"key":"D","text":"0.02"},{"key":"E","text":"没有默认值"}],"answer":"A","explanation":""},{"id":84,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设满足检验方法的条件,两种体位收缩压差值为5.00±4.00mmHg,假设检验其计算的检验统计量值是:","options":[{"key":"A","text":"1.25"},{"key":"B","text":"2.58"},{"key":"C","text":"5.00"},{"key":"D","text":"1.96"},{"key":"E","text":"不能计算"}],"answer":"C","explanation":""},{"id":85,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设满足检验方法的条件,两种体位收缩压差值为5.00±4.00mmHg,假设检验计算的检验统计量对应的自由度是:","options":[{"key":"A","text":"16"},{"key":"B","text":"32"},{"key":"C","text":"15"},{"key":"D","text":"31"},{"key":"E","text":"不能计算"}],"answer":"C","explanation":"n-1"},{"id":86,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设满足检验方法的条件,两种体位收缩压差值为5.00±4.00mmHg,假设检验计算的检验统计量得到的P值:","options":[{"key":"A","text":"0.001<p<0.005"},{"key":"B","text":"0.001<p<0.002"},{"key":"C","text":"p<0.0005"},{"key":"D","text":"p<0.001"},{"key":"E","text":"不能计算"}],"answer":"D","explanation":"根据自由度及计算出的统计量,查界值表"},{"id":87,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设满足检验方法的条件,两种体位收缩压差值为5.00±4.00mmHg,假设检验计算的检验统计量得到的P越小越说明:","options":[{"key":"A","text":"两种体位的收缩压差别越大"},{"key":"B","text":"该16名男性受试者两种体位收缩压差别越大"},{"key":"C","text":"越有理由认为两种体位的收缩压不同"},{"key":"D","text":"越有理由认为这16名男性受试者两种体位收缩压相同"},{"key":"E","text":"越有理由认为这16名男性受试者两种体位收缩压不同"}],"answer":"C","explanation":""},{"id":88,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设满足检验方法的条件,两种体位收缩压差值为5.00±4.00mmHg,假设检验的统计学结论是:","options":[{"key":"A","text":"不拒绝H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":89,"q":"某医生按研究要求测量了16名45-55岁男性受试对象站位与躺位两种体位的收缩压(mmHg)。问该人群这两种体位的收缩压是否有差异?假设满足检验方法的条件,两种体位收缩压差值为5.00±4.00mmHg,假设检验的专业结论是:","options":[{"key":"A","text":"可认为该人群这两种体位的收缩压相同"},{"key":"B","text":"可认为该人群这两种体位的收缩压不同"},{"key":"C","text":"还不能认为该人群这两种体位的收缩压不同"},{"key":"D","text":"还不能认为该人群站位收缩压高于躺位收缩压"},{"key":"E","text":"可以认为该人群躺位收缩压低于站位收缩压"}],"answer":"B","explanation":""},{"id":91,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。比较两组IL-6有无差异?该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"A","explanation":""},{"id":92,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。比较两组IL-6有无差异?该研究数据分析需要满足的条件不包括:","options":[{"key":"A","text":"两组数据代表的总体方差要齐性"},{"key":"B","text":"两组数据代表的总体数据均服从正态分布"},{"key":"C","text":"两组数据代表的总体方差要相等"},{"key":"D","text":"两组数据代表的总体方差越小越好"},{"key":"E","text":"两组数据是随机样本"}],"answer":"D","explanation":"随机、正态、齐性"},{"id":93,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异其检验方法是:","options":[{"key":"A","text":"配对t检验"},{"key":"B","text":"方差齐性检验"},{"key":"C","text":"成组Z检验"},{"key":"D","text":"单样本t检验"},{"key":"E","text":"样本均数与总体均数比较的Z检验"}],"answer":"C","explanation":""},{"id":94,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异,假设检验的原假设是:","options":[{"key":"A","text":"H0:μ1=μ2"},{"key":"B","text":"H1:μ≠μ0"},{"key":"C","text":"H1:μd<μ"},{"key":"D","text":"H0:μ1≠μ2"},{"key":"E","text":"H0:μd=0"}],"answer":"A","explanation":""},{"id":95,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异,备择假设是:","options":[{"key":"A","text":"H0:μd=0"},{"key":"B","text":"H1:μ≠μ0"},{"key":"C","text":"H1:μ1≠μ2"},{"key":"D","text":"H0:μ≠μ0"},{"key":"E","text":"H0:μd>0"}],"answer":"C","explanation":""},{"id":96,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异,检验水准默认及检验效能是:","options":[{"key":"A","text":"0.05 1-β"},{"key":"B","text":"0.01 α"},{"key":"C","text":"0.10 β"},{"key":"D","text":"0.02 1-α"},{"key":"E","text":"0.05 α"}],"answer":"A","explanation":""},{"id":97,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml),鱼油组为12.0±3.5 ng/ml,空白对照组为13.5±2.5 ng/ml。假设已满足检验方法的条件,比较两组IL-6有无差异,假设检验其计算的检验统计量值是:","options":[{"key":"A","text":"1.50"},{"key":"B","text":"2.58"},{"key":"C","text":"2.47"},{"key":"D","text":"1.96"},{"key":"E","text":"不能计算"}],"answer":"C","explanation":""},{"id":98,"q":"某医生随机抽取36位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异,假设检验计算的检验统计量对应的自由度是:","options":[{"key":"A","text":"36"},{"key":"B","text":"35"},{"key":"C","text":"34"},{"key":"D","text":"31"},{"key":"E","text":"不能计算"}],"answer":"C","explanation":"n-1"},{"id":99,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml),鱼油组为12.0±3.5 ng/ml,空白对照组为13.5±2.5 ng/ml。假设已满足检验方法的条件,比较两组IL-6有无差异,假设检验其计算的检验统计量得到的P值:","options":[{"key":"A","text":"0.01<p<0.05"},{"key":"B","text":"0.01<p<0.02"},{"key":"C","text":"p<0.005"},{"key":"D","text":"p<0.01"},{"key":"E","text":"不能计算"}],"answer":"B","explanation":"根据自由度及计算出的统计量,查界值表"},{"id":100,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异,假设检验计算的检验统计量得到的P越小越说明:","options":[{"key":"A","text":"两组的IL-6差别越大"},{"key":"B","text":"两组代表的总体IL-6差别越大"},{"key":"C","text":"越有理由认为两组代表的总体IL-6不同"},{"key":"D","text":"越有理由认为这100位受试对象的IL-6相同"},{"key":"E","text":"越有理由认为这100位受试对象的IL-6不同"}],"answer":"C","explanation":""},{"id":101,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异,P<0.05,说明:","options":[{"key":"A","text":"不拒绝H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":102,"q":"某医生随机抽取100位受试对象,随机等分为2组(补充鱼油组与空白对照组)并经过一段时间后,测其IL-6(ng/ml)。假设已满足检验方法的条件,比较两组IL-6有无差异,若P>0.05,说明:","options":[{"key":"A","text":"两组的IL-6差别越大"},{"key":"B","text":"两组代表的总体IL-6差别越大"},{"key":"C","text":"可以认为两组代表的总体IL-6相同"},{"key":"D","text":"还不能认为这100位受试对象的IL-6相同"},{"key":"E","text":"可以认为这100位受试对象的IL-6不同"}],"answer":"C","explanation":"CBCDCCDCBDECB"},{"id":103,"q":"两样本均数t检验也称为:","options":[{"key":"A","text":"单样本t检验"},{"key":"B","text":"独立样本t检验"},{"key":"C","text":"配对样本t检验"},{"key":"D","text":"多样本t检验"},{"key":"E","text":"多样本 F、 检验"}],"answer":"B","explanation":""},{"id":104,"q":"两样本均数比较的t检验,差别有统计学意义时,P越小,说明:","options":[{"key":"A","text":"两样本均数差别越大"},{"key":"B","text":"两总体均数差别越大"},{"key":"C","text":"越有理由认为两总体均数不同"},{"key":"D","text":"越有理由认为两样本均数不同"},{"key":"E","text":"越有理由认为两总体均数相同"}],"answer":"C","explanation":""},{"id":105,"q":"t检验的应用条件是:","options":[{"key":"A","text":"数据正偏态分布且方差齐性"},{"key":"B","text":"数据负偏态分布且方差齐性"},{"key":"C","text":"数据正态分布且方差不齐"},{"key":"D","text":"数据正态分布且方差齐性"},{"key":"E","text":"数据分布不明"}],"answer":"D","explanation":""},{"id":106,"q":"在两均数t检验中,其无效假设为:","options":[{"key":"A","text":"两个总体均数不同"},{"key":"B","text":"两个样本均数不同"},{"key":"C","text":"两个总体均数相同"},{"key":"D","text":"两个样本均数相同"},{"key":"E","text":"以上均不对"}],"answer":"C","explanation":""},{"id":107,"q":"两样本均数比较时,按检验水准0.05,认为两总体均数有差异,此时若推断有错,其犯错误的概率最大为:","options":[{"key":"A","text":"大于0.05"},{"key":"B","text":"小于0.0 5"},{"key":"C","text":"等于0.05"},{"key":"D","text":"β,而β未知"},{"key":"E","text":"1-β,而β未知"}],"answer":"C","explanation":""},{"id":108,"q":"配对t检验中,按检验水准0.05,认为两总体均数无统计学差异,此时若推断有错,其犯错误的概率最大为:","options":[{"key":"A","text":"大于0.05"},{"key":"B","text":"小于0.0 5"},{"key":"C","text":"等于0.05"},{"key":"D","text":"β,而β未知"},{"key":"E","text":"1-β,而β未知"}],"answer":"D","explanation":""},{"id":109,"q":"两样本均数假设检验的目的是判断:","options":[{"key":"A","text":"两样本均数是否相等"},{"key":"B","text":"两样本均数的差别有多大"},{"key":"C","text":"两总体均数是否相等"},{"key":"D","text":"两总体均数差别有多大"},{"key":"E","text":"两总体均数与样本均数的差别有多大"}],"answer":"C","explanation":""},{"id":110,"q":"当两总体方差不等时,适用于比较两样本均数的方法是:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"t’检验"},{"key":"C","text":"Z检验"},{"key":"D","text":"方差齐性F检验"},{"key":"E","text":"方差分析"}],"answer":"B","explanation":""},{"id":111,"q":"进行成组设计t检验的两个前提条件,一个是各样本是否来自正态总体,二是:","options":[{"key":"A","text":"核对数据"},{"key":"B","text":"作変量変换"},{"key":"C","text":"处理缺失值"},{"key":"D","text":"检验总体方差是否相等"},{"key":"E","text":"计算相关的检验统计量"}],"answer":"D","explanation":""},{"id":112,"q":"关于t检验的叙述,错误的是:","options":[{"key":"A","text":"z检验是t检验的特例"},{"key":"B","text":"t检验要求样本来自正态分布的总体"},{"key":"C","text":"配对t检验的实质与单样本t检验相同"},{"key":"D","text":"成组t检验要求两样本来自的总体方差相等"},{"key":"E","text":"Cochran&Cox法是对自由度进行校正"}],"answer":"E","explanation":""},{"id":113,"q":"若总例数相同,则成组资料的t检验与配对资料t检验相比:","options":[{"key":"A","text":"成组t检验的效率高些"},{"key":"B","text":"配对t检验的效率高些"},{"key":"C","text":"两者效率相等"},{"key":"D","text":"两者效率相差不大"},{"key":"E","text":"两者效率不可比"}],"answer":"B","explanation":""},{"id":115,"q":"HBsAg总体阳性率95%置信区间表示:","options":[{"key":"A","text":"总体中有95%的个体值在此范围内"},{"key":"B","text":"若有100个人,其中95个人在此范围内"},{"key":"C","text":"100个总体阳性率,有95个分布在此范围内"},{"key":"D","text":"总体率一定,每100个阳性者中有95个在此范围内"},{"key":"E","text":"π一定时,随机抽取n相等的100个样本率,至少有95个推断正确"}],"answer":"E","explanation":""},{"id":116,"q":"用某药治疗某病患者,5例中有4例治愈,宜写作4/5,而不计算治愈率为4/5×100%=80%,这是由于:","options":[{"key":"A","text":"计算治愈率的方法不正确"},{"key":"B","text":"样本例数太少,计算的样本治愈率置信区间太宽"},{"key":"C","text":"样本阳性数比例太高,计算的样本治愈率置信区间太窄"},{"key":"D","text":"样本例数太少,计算的总体治愈率置信区间太宽"},{"key":"E","text":"样本阳性数比例太高,计算的总体治愈率置信区间太窄"}],"answer":"D","explanation":"样本量的代表性很差,计算的总体率范围太宽"},{"id":126,"q":"χ2分布的形状:","options":[{"key":"A","text":"同正态分布"},{"key":"B","text":"同t分布"},{"key":"C","text":"对称分布"},{"key":"D","text":"与自由度有关"},{"key":"E","text":"与样本含量n有关"}],"answer":"D","explanation":""},{"id":127,"q":"四格表卡方检验校正公式的应用条件之一是:","options":[{"key":"A","text":"T<1"},{"key":"B","text":"n<40"},{"key":"C","text":"1≤T<5"},{"key":"D","text":"n=30"},{"key":"E","text":"T≥5"}],"answer":"C","explanation":""},{"id":128,"q":"四 格 表资料的分析 必 须 用 校 正检 验 的 条 件 是::","options":[{"key":"A","text":"n > 40 且 T > 5"},{"key":"B","text":"n ≥40 且 1≤T< 5"},{"key":"C","text":"n < 40 且 T > 1"},{"key":"D","text":"n < 40 且 T < 1"},{"key":"E","text":"以 上 都 不 对"}],"answer":"B","explanation":""},{"id":129,"q":"对多个样本率进行比较,得到P<0.05的结果,说明:","options":[{"key":"A","text":"样本率各不相同"},{"key":"B","text":"样本率都相同"},{"key":"C","text":"至少有两个样本率是不同的"},{"key":"D","text":"样本所来自的总体至少两个总体率不同"},{"key":"E","text":"以上都不对"}],"answer":"D","explanation":""},{"id":130,"q":"两个四格表,一个Χ2>Χ20.05(1),另一个Χ2>Χ20.01(1),可认为","options":[{"key":"A","text":"前者两个的百分数相差大"},{"key":"B","text":"后者两个的百分数相差大"},{"key":"C","text":"前者更有理由认为两总体率不同"},{"key":"D","text":"后者更有理由认为两总体率不同"},{"key":"E","text":"尚不能下结论"}],"answer":"D","explanation":""},{"id":131,"q":"对于总合计数n为500的5个样本率的资料做卡方检验,其自由度为:","options":[{"key":"A","text":"499"},{"key":"B","text":"496"},{"key":"C","text":"1"},{"key":"D","text":"4"},{"key":"E","text":"9"}],"answer":"D","explanation":""},{"id":132,"q":"从甲、乙两篇文献中,查到同类研究的两个率比较的四格表资料,其检验甲文p<0.01,乙文P<0.05,可认为:","options":[{"key":"A","text":"两文结果有矛盾"},{"key":"B","text":"甲文结果更可信"},{"key":"C","text":"甲文结果不可信"},{"key":"D","text":"两文结果基本一致"},{"key":"E","text":"甲文说明总体的差别大"}],"answer":"D","explanation":""},{"id":133,"q":"做两个样本率的假设检验,其无效假设为:","options":[{"key":"A","text":"两样本率相同"},{"key":"B","text":"两样本率不相同"},{"key":"C","text":"两样本率等于两总体率"},{"key":"D","text":"两总体率相同"},{"key":"E","text":"两总体率不相同"}],"answer":"D","explanation":""},{"id":134,"q":"三个率比较的卡方检验,若P<0.05,则结论为:","options":[{"key":"A","text":"三个样本率各不相同"},{"key":"B","text":"总体率之间两两有差别"},{"key":"C","text":"至少有两个样本率有差别"},{"key":"D","text":"至少有两个总体率有差别"},{"key":"E","text":"三个样本率不全相等或完全不相等"}],"answer":"D","explanation":""},{"id":135,"q":"四格表资料的χ2检验,其校正条件是:","options":[{"key":"A","text":"总例数大于40"},{"key":"B","text":"有一个实际数小于5大于1,且n>40"},{"key":"C","text":"有一个理论数小于5大于1,且n>40"},{"key":"D","text":"至少有一个实际数小于1"},{"key":"E","text":"至少有一个理论理论数小于1"}],"answer":"C","explanation":""},{"id":136,"q":"R×C列联表的χ2检验,正确的是:","options":[{"key":"A","text":"任一格子理论数小于5,则需进行校正卡方检验"},{"key":"B","text":"任一格子理论数小于5,则需将相应行或列合并"},{"key":"C","text":"若1/5以上的格子理论数小于5,则需进行校正卡方检验"},{"key":"D","text":"若1/5以上的格子理论数小于5,则需将相应行或列合并"},{"key":"E","text":"若1/5以上的格子理论数小于5,则需做方差分析"}],"answer":"D","explanation":""},{"id":137,"q":"对于三个样本率资料作卡方检验,自由度等于:","options":[{"key":"A","text":"1"},{"key":"B","text":"2"},{"key":"C","text":"4"},{"key":"D","text":"6"},{"key":"E","text":"8"}],"answer":"B","explanation":""},{"id":138,"q":"有52例可疑宫颈癌患者,分别用甲、乙两法进行诊断,其中甲法阳性28例,乙法阳性25例,两法均为阳性20例,欲比较两法阳性率有无差别,宜用:","options":[{"key":"A","text":"四格表卡方检验"},{"key":"B","text":"配对四格表卡方检验"},{"key":"C","text":"行×列表卡方检验"},{"key":"D","text":"t检验"},{"key":"E","text":"方差分析"}],"answer":"B","explanation":""},{"id":139,"q":"χ2检验不能用于:","options":[{"key":"A","text":"两个及两个以上样本均数的比较"},{"key":"B","text":"配对设计两样本率的比较"},{"key":"C","text":"多个样本率或构成比的比较"},{"key":"D","text":"频数分布的拟合优度检验"},{"key":"E","text":"率的线性趋势检验"}],"answer":"A","explanation":""},{"id":140,"q":"下列问题中不能采用卡方检验进行统计推断的是:","options":[{"key":"A","text":"比较不同性别人群血红蛋白含量的平均水平有无差异"},{"key":"B","text":"比较小学生、中学生、高中生近视眼的发生率有无差异"},{"key":"C","text":"比较不同性别人群高血压的患病率有无差异"},{"key":"D","text":"比较新药和常规药物的疗效(有效、无效)有无差异"},{"key":"E","text":"比较不同民族ABO血型的分布有无差异"}],"answer":"A","explanation":""},{"id":141,"q":"对于总合计数n为500的5个样本率的资料做χ2检验,其自由度为:","options":[{"key":"A","text":"499"},{"key":"B","text":"496"},{"key":"C","text":"1"},{"key":"D","text":"4"},{"key":"E","text":"9"}],"answer":"D","explanation":""},{"id":142,"q":"χ2值的取值范围是:","options":[{"key":"A","text":"-∞<χ2<+∞"},{"key":"B","text":"-∞<χ2<0"},{"key":"C","text":"0≤χ2<+∞"},{"key":"D","text":"-1<χ2<1"},{"key":"E","text":"χ2<1"}],"answer":"C","explanation":""},{"id":143,"q":"配对四格表资料,若进行卡方检验无需利用校正公式的条件为:","options":[{"key":"A","text":"n≥40"},{"key":"B","text":"T≥5"},{"key":"C","text":"b+c<40"},{"key":"D","text":"b+c≥40"},{"key":"E","text":"T≥1"}],"answer":"D","explanation":""},{"id":144,"q":"R×C列联表χ2检验时,如果某些格子的理论频数太小,最好的处理是:","options":[{"key":"A","text":"增大样本含量,以达到增大理论频数的目的"},{"key":"B","text":"删去理论频数太小的格子所对应的行或列"},{"key":"C","text":"将理论频数太小的行或列合并,相应的实际频数相加"},{"key":"D","text":"采用四格表连续性校正的公式进行校正"},{"key":"E","text":"采用确切概率法"}],"answer":"A","explanation":""},{"id":145,"q":"四个样本频率比较时,有一个理论频数小于5大于1时(B)。","options":[{"key":"A","text":"必须先做合理的并组"},{"key":"B","text":"直接做χ2检验"},{"key":"C","text":"不能做χ2检验"},{"key":"D","text":"必须做校正χ2检验"},{"key":"E","text":"不能确定是否需要校正"}],"answer":"B","explanation":""},{"id":146,"q":"列联表资料χ2检验的自由度计算公式为:","options":[{"key":"A","text":"R-1"},{"key":"B","text":"C-1"},{"key":"C","text":"R+C-1"},{"key":"D","text":"R×C-1"},{"key":"E","text":"(R-1)(C-1)"}],"answer":"E","explanation":""},{"id":147,"q":"下列关于Fisher确切概率法的说法,错误的是:","options":[{"key":"A","text":"一种直接计算概率的假设检验方法"},{"key":"B","text":"包括四格表的确切概率法"},{"key":"C","text":"理论依据是χ2分布"},{"key":"D","text":"对于四格表,在周边合计不变的条件下计算各种组合的概率"},{"key":"E","text":"适用于用其它检验方法所得的概率P接近检验水准α的分类资料"}],"answer":"C","explanation":""},{"id":148,"q":"在进行3个样本率比较的卡方检验时,若统计推断结果为P<0.05,则结论为:","options":[{"key":"A","text":"3个样本率都不相同"},{"key":"B","text":"3个总体率都不相同"},{"key":"C","text":"3个样本率不全相同"},{"key":"D","text":"3个总体率不全相同"},{"key":"E","text":"3个样本率和总体率均不相同"}],"answer":"D","explanation":""},{"id":149,"q":"当自由度不变时,关于χ2值与P值的关系,下列哪一项是正确的:","options":[{"key":"A","text":"χ2值越大,P值越大。"},{"key":"B","text":"χ2值越大,P值越小。"},{"key":"C","text":"χ2值变化时,P值不变。"},{"key":"D","text":"χ2值变化时,P值变大或变小。"},{"key":"E","text":"χ2值变化时,P值可能变化也可能不变。"}],"answer":"B","explanation":""},{"id":150,"q":"两样本率比较的卡方检验,统计推断的结果为P>0.05,则结论为:","options":[{"key":"A","text":"两样本率差别无统计学意义"},{"key":"B","text":"两样本率的差别有统计学意义"},{"key":"C","text":"两总体率的差别无统计学意义"},{"key":"D","text":"两总体率的差别有统计学意义"},{"key":"E","text":"两总体率差别不大"}],"answer":"C","explanation":""},{"id":152,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"D","explanation":""},{"id":153,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究数据分析需要用的检验方法是:","options":[{"key":"A","text":"四格表卡方检验"},{"key":"B","text":"配对四格表卡方检验"},{"key":"C","text":"关联性卡方检验"},{"key":"D","text":"多样本比较的方差分析"},{"key":"E","text":"R×C表的卡方检验"}],"answer":"A","explanation":""},{"id":154,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究数据分析检验方法其基本公式需要满足的条件是:","options":[{"key":"A","text":"总例数n≥40且任意一个格子的T≥5"},{"key":"B","text":"总例数n≥40或任意一个格子的1<T≤5"},{"key":"C","text":"20%格子理论数不能小于5"},{"key":"D","text":"总例数n≥40"},{"key":"E","text":"1<T"}],"answer":"A","explanation":""},{"id":155,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究分析需要的假设检验其备择假设是:","options":[{"key":"A","text":"各样本代表的总体有效率不全相同"},{"key":"B","text":"各样本有效率不全相同"},{"key":"C","text":"各样本代表的总体有效率不相同"},{"key":"D","text":"各样本有效率相同"},{"key":"E","text":"至少有两个样本有效率不同"}],"answer":"C","explanation":""},{"id":156,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究分析需要的假设检验其检验统计量是:","options":[{"key":"A","text":"F"},{"key":"B","text":"T"},{"key":"C","text":"H"},{"key":"D","text":"χ²"},{"key":"E","text":"Z"}],"answer":"D","explanation":"χ²检验"},{"id":157,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究分析需要的假设检验其自由度是:","options":[{"key":"A","text":"79"},{"key":"B","text":"2"},{"key":"C","text":"1"},{"key":"D","text":"3"},{"key":"E","text":"4"}],"answer":"C","explanation":""},{"id":158,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究单纯手术组8对应的理论数是:","options":[{"key":"A","text":"40"},{"key":"B","text":"30"},{"key":"C","text":"10"},{"key":"D","text":"15"},{"key":"E","text":"3"}],"answer":"C","explanation":""},{"id":159,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究手术+化疗组12对应的理论数是:","options":[{"key":"A","text":"40"},{"key":"B","text":"30"},{"key":"C","text":"10"},{"key":"D","text":"15"},{"key":"E","text":"3"}],"answer":"C","explanation":""},{"id":160,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究分析需要的假设检验计算的检验统计量得到的P越小越说明:","options":[{"key":"A","text":"两组的有效率差别越大"},{"key":"B","text":"两组代表的总体有效率差别越大"},{"key":"C","text":"越有理由认为两组代表的总体有效率不相同"},{"key":"D","text":"越有理由认为两组的样本有效率相同"},{"key":"E","text":"越有理由认为两组代表的总体有效率相同"}],"answer":"C","explanation":""},{"id":161,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究分析需要的假设检验计算的检验统计量得到的若是P<0.05说明:","options":[{"key":"A","text":"接受H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":162,"q":"现有80例乳腺癌患者将患者随机等分为2组分别接单纯手术治疗和手术+化疗治疗,通过一个疗程后观察有所改善的患者数,单纯手术组8例,手术+化疗组12例。该研究分析需要的假设检验计算的检验统计量得到的若是P>0.05说明:","options":[{"key":"A","text":"可以认为两组的有效率差别越小"},{"key":"B","text":"可以认为两组代表的总体有效率差别越小"},{"key":"C","text":"还不能认为两组代表的总体有效率不相同"},{"key":"D","text":"可以认为两组的样本有效率不同"},{"key":"E","text":"还不能认为两组代表的总体有效率相同"}],"answer":"C","explanation":""},{"id":164,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"D","explanation":""},{"id":165,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究数据分析需要的检验方法是:","options":[{"key":"A","text":"四格表卡方检验"},{"key":"B","text":"配对四格表卡方检验"},{"key":"C","text":"关联性卡方检验"},{"key":"D","text":"多样本比较的方差分析"},{"key":"E","text":"R×C表的卡方检验"}],"answer":"B","explanation":""},{"id":166,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究数据分析假设检验不需要校正的条件是:","options":[{"key":"A","text":"总例数n≥40"},{"key":"B","text":"任意一个格子的1<T≤5"},{"key":"C","text":"20%格子理论数不能小于5"},{"key":"D","text":"b+c≥40"},{"key":"E","text":"任意一个格子的T>1"}],"answer":"D","explanation":""},{"id":167,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。两种方法检查均为阴性的人数是:","options":[{"key":"A","text":"40"},{"key":"B","text":"5"},{"key":"C","text":"18"},{"key":"D","text":"23"},{"key":"E","text":"27"}],"answer":"E","explanation":""},{"id":168,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究分析需要的假设检验其备择假设是:","options":[{"key":"A","text":"B=C,两方法的检测结果相同"},{"key":"B","text":"B≠C,两方法的检测结果不相同"},{"key":"C","text":"B≠C,两样本代表的总体有效率相同"},{"key":"D","text":"B=C,两样本有效率相同"},{"key":"E","text":"B≠C,两个样本有效率不同"}],"answer":"B","explanation":""},{"id":169,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究分析需要的假设检验其检验统计量是:","options":[{"key":"A","text":"F"},{"key":"B","text":"T"},{"key":"C","text":"H"},{"key":"D","text":"χ²"},{"key":"E","text":"Z"}],"answer":"D","explanation":"χ²检验"},{"id":170,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究分析需要的假设检验其自由度是:","options":[{"key":"A","text":"119"},{"key":"B","text":"2"},{"key":"C","text":"1"},{"key":"D","text":"3"},{"key":"E","text":"7"}],"answer":"C","explanation":""},{"id":171,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。研究分析需要的假设检验计算的检验统计量得到的P越小越说明:","options":[{"key":"A","text":"两组的有效率差别越大"},{"key":"B","text":"两组代表的总体有效率差别越大"},{"key":"C","text":"越有理由认为两种检查方法检测结果不同"},{"key":"D","text":"越有理由认为两种检查方法检测结果相同"},{"key":"E","text":"越有理由认为两种检查方法不相同"}],"answer":"C","explanation":""},{"id":172,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究分析需要的假设检验计算的检验统计量得到的P<0.05说明:","options":[{"key":"A","text":"不拒绝H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":173,"q":"用触诊和X线平片检查对80例妇女做乳腺癌检查,触诊30例阳性,X线平片有45例阴性,两种方法均为阳性的共12例。该研究分析需要的假设检验计算的检验统计量得到的若是 P>0.05说明:","options":[{"key":"A","text":"可以认为两组的有效率差别越小"},{"key":"B","text":"可以认为两组代表的总体有效率差别越小"},{"key":"C","text":"还不能认为两种方法检测结果不同"},{"key":"D","text":"可以认为这两种方法检测结果相同"},{"key":"E","text":"还不能认为两种方法不相同"}],"answer":"C","explanation":""},{"id":175,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究得到数据资料类型是:","options":[{"key":"A","text":"连续型定量资料"},{"key":"B","text":"离散型定量资料"},{"key":"C","text":"多分类定性资料"},{"key":"D","text":"两分类定性资料"},{"key":"E","text":"等级资料"}],"answer":"D","explanation":""},{"id":176,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究数据分析需要满足的条件是:","options":[{"key":"A","text":"总例数n≥40"},{"key":"B","text":"任意一个格子的1<T≤5"},{"key":"C","text":"20%格子理论数不能小于5"},{"key":"D","text":"样本率p > 20%"},{"key":"E","text":"总体率固定不变"}],"answer":"C","explanation":""},{"id":177,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究数据分析需要的检验方法是:","options":[{"key":"A","text":"四格表卡方检验"},{"key":"B","text":"配对四格表卡方检验"},{"key":"C","text":"关联性卡方检验"},{"key":"D","text":"多样本比较的方差分析"},{"key":"E","text":"R×C表的卡方检验"}],"answer":"E","explanation":""},{"id":178,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究分析需要的假设检验其备择假设是:","options":[{"key":"A","text":"各样本代表的总体有效率不全相同"},{"key":"B","text":"各样本有效率不全相同"},{"key":"C","text":"各样本代表的总体有效率相同"},{"key":"D","text":"各样本有效率相同"},{"key":"E","text":"至少有两个样本有效率不同"}],"answer":"A","explanation":""},{"id":179,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究分析需要的假设检验其检验统计量是:","options":[{"key":"A","text":"F"},{"key":"B","text":"T"},{"key":"C","text":"H"},{"key":"D","text":"χ²"},{"key":"E","text":"Z"}],"answer":"D","explanation":"χ²检验"},{"id":180,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究分析需要的假设检验其自由度是:","options":[{"key":"A","text":"119"},{"key":"B","text":"2"},{"key":"C","text":"1"},{"key":"D","text":"3"},{"key":"E","text":"7"}],"answer":"D","explanation":""},{"id":181,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究A药组12对应的理论数是:","options":[{"key":"A","text":"30"},{"key":"B","text":"16"},{"key":"C","text":"14"},{"key":"D","text":"15"},{"key":"E","text":"3"}],"answer":"C","explanation":""},{"id":182,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究分析需要的假设检验计算的检验统计量得到的P越小越说明:","options":[{"key":"A","text":"各组的有效率差别越大"},{"key":"B","text":"各组代表的总体有效率差别越大"},{"key":"C","text":"越有理由认为各组代表的总体有效率不全相同"},{"key":"D","text":"越有理由认为这各组的样本有效率相同"},{"key":"E","text":"越有理由认为各组代表的总体有效率全不相同"}],"answer":"C","explanation":""},{"id":183,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究分析需要的假设检验计算的检验统计量得到的P<0.05说明:","options":[{"key":"A","text":"不拒绝H0,差异无统计学意义"},{"key":"B","text":"不拒绝H0,差异有统计学意义"},{"key":"C","text":"不拒绝H1,差异无统计学意义"},{"key":"D","text":"拒绝H1,接受H0,差异有统计学意义"},{"key":"E","text":"拒绝H0,接受H1,差异有统计学意义"}],"answer":"E","explanation":""},{"id":184,"q":"随机选择120例抑郁症患者进行4种不同药物治疗精神抑郁症的疗效的研究,将患者随机等分为4组分别接受一种药物治疗,通过一个疗程后观察有所改善的患者数,安慰剂组8例,A药组12例,B药组21例,C药组15例。该研究分析需要的假设检验计算的检验统计量得到的若是 P>0.05说明:","options":[{"key":"A","text":"可以认为各组的有效率差别越小"},{"key":"B","text":"可以认为各组代表的总体有效率差别越小"},{"key":"C","text":"还不能认为各组代表的总体有效率不全相同"},{"key":"D","text":"可以认为这各组的样本有效率相同"},{"key":"E","text":"还不能认为各组代表的总体有效率全不相同"}],"answer":"C","explanation":""},{"id":185,"q":"双因素设计多样本资料比较,当数据为非正态分布时宜选择:","options":[{"key":"A","text":"H检验"},{"key":"B","text":"χ2检验"},{"key":"C","text":"t检验"},{"key":"D","text":"M检验"},{"key":"E","text":"Mann-Whitney检验"}],"answer":"D","explanation":""},{"id":186,"q":"多样本等级资料比较,宜选择:","options":[{"key":"A","text":"Wilcoxon检验"},{"key":"B","text":"Z检验"},{"key":"C","text":"H检验"},{"key":"D","text":"χ2检验"},{"key":"E","text":"F检验"}],"answer":"C","explanation":""},{"id":187,"q":"非参数检验中,M检验也称为:","options":[{"key":"A","text":"Friedman检验"},{"key":"B","text":"H检验"},{"key":"C","text":"卡方检验"},{"key":"D","text":"F检验"},{"key":"E","text":"t检验"}],"answer":"A","explanation":""},{"id":189,"q":"非参数检验中,Kruskal-Wallis检验也称为:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"F检验"},{"key":"C","text":"M检验"},{"key":"D","text":"H检验"},{"key":"E","text":"Wilcoxon检验"}],"answer":"D","explanation":""},{"id":190,"q":"在符号秩和检验出现两个差值为零,编秩时,它们的秩次应为:","options":[{"key":"A","text":"–1, +2"},{"key":"B","text":"–1.5, +1.5"},{"key":"C","text":"–2,+1"},{"key":"D","text":"–1,+1"},{"key":"E","text":"不参加编秩"}],"answer":"E","explanation":""},{"id":192,"q":"配对比较的符号秩和检验,n较小时,确定P值的方法是:","options":[{"key":"A","text":"T值越大,P值越小"},{"key":"B","text":"T值越大,P值越大"},{"key":"C","text":"T值即为Z值,可查Z界值表"},{"key":"D","text":"T值在界值范围外,P值大于相应的概率"},{"key":"E","text":"T值在界值范围内,P值大于相应的概率"}],"answer":"E","explanation":""},{"id":193,"q":"多样本计量资料比较,当分布类型不清时选择:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"Z检验"},{"key":"C","text":"H检验"},{"key":"D","text":"χ2检验"},{"key":"E","text":"F检验"}],"answer":"C","explanation":""},{"id":194,"q":"下列关于非参数检验的叙述错误的是:","options":[{"key":"A","text":"非参数检验不依赖于总体的分布类型"},{"key":"B","text":"非参数检验仅用于等级资料比较"},{"key":"C","text":"适合参数检验的资料采用非参数检验会降低检验效能"},{"key":"D","text":"非参数检验会损失部分样本信息"},{"key":"E","text":"秩和检验是一种非参数检验方法"}],"answer":"B","explanation":""},{"id":195,"q":"两种药物疗效(治愈、显效、好转、无效)比较,宜用:","options":[{"key":"A","text":"χ2检验"},{"key":"B","text":"方差分析"},{"key":"C","text":"秩和检验"},{"key":"D","text":"t检验"},{"key":"E","text":"SNK-q检验"}],"answer":"C","explanation":""},{"id":196,"q":"用大剂量VE治疗产后缺乳,以安慰剂作对照,VE组中有效者24例,无效者6例,安慰剂组有效者4例,无效者12例。欲分析VE是否有效,应用:","options":[{"key":"A","text":"χ2检验"},{"key":"B","text":"方差分析"},{"key":"C","text":"秩和检验"},{"key":"D","text":"t检验"},{"key":"E","text":"SNK-q检验"}],"answer":"A","explanation":""},{"id":197,"q":"定量资料多组比较,满足参数检验条件,假设检验时宜采用:","options":[{"key":"A","text":"秩和检验"},{"key":"B","text":"方差分析"},{"key":"C","text":"t检验"},{"key":"D","text":"χ2检验"},{"key":"E","text":"配对四格表χ2检验"}],"answer":"B","explanation":""},{"id":198,"q":"定量资料多组比较,当数据资料服从偏态分布时,宜用:","options":[{"key":"A","text":"Kruskal-Wallis H检验"},{"key":"B","text":"方差分析"},{"key":"C","text":"t检验"},{"key":"D","text":"χ2检验"},{"key":"E","text":"配对四格表χ2检验"}],"answer":"A","explanation":""},{"id":199,"q":"对于多组独立有序多分类变量资料比较,假设检验时宜采用:","options":[{"key":"A","text":"H检验"},{"key":"B","text":"方差分析"},{"key":"C","text":"t检验"},{"key":"D","text":"χ2检验"},{"key":"E","text":"配对四格表χ2检验"}],"answer":"A","explanation":""},{"id":200,"q":"下列属于非参数统计应用条件的是:","options":[{"key":"A","text":"样本数据来自正态总体"},{"key":"B","text":"若两组比较,要求两样本方差相等"},{"key":"C","text":"总体分布类型未知"},{"key":"D","text":"要求样本例数很大"}],"answer":"C","explanation":""},{"id":201,"q":"用两种方法检查已确诊的乳腺癌患者120名。甲法的检出率为60%,乙法的检出率为50%,甲、乙两法一致检出率为35%,试问两种方法检出结果有无差异,宜用:","options":[{"key":"A","text":"配对四格表χ2检验"},{"key":"B","text":"方差分析"},{"key":"C","text":"秩和检验"},{"key":"D","text":"四格表χ2检验"},{"key":"E","text":"SNK-q检验"}],"answer":"A","explanation":""},{"id":202,"q":"进行两小样本定量资料比较的假设检验时,首先应考虑:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"Z检验"},{"key":"C","text":"秩和检验"},{"key":"D","text":"χ2检验"},{"key":"E","text":"满足参数检验还是非参数检验的条件"}],"answer":"E","explanation":""},{"id":203,"q":"下列资料类型中,不宜采用秩和检验的是:","options":[{"key":"A","text":"正态分布资料"},{"key":"B","text":"等级资料"},{"key":"C","text":"分布类型未知资料"},{"key":"D","text":"极度偏态分布资料"},{"key":"E","text":"数据一端不确定的资料"}],"answer":"A","explanation":""},{"id":204,"q":"两种方法测定10个观察对象的某指标,其中只有1个观察对象用两种方法测定的结果相同,若已知正的秩次和为10.5,则负的秩次和为:","options":[{"key":"A","text":"44.5"},{"key":"B","text":"35.5"},{"key":"C","text":"34.5"},{"key":"D","text":"32.5"},{"key":"E","text":"无法计算"}],"answer":"C","explanation":""},{"id":205,"q":"成组设计两样本比较的秩和检验,检验统计量T通常为:","options":[{"key":"A","text":"较小的秩和"},{"key":"B","text":"较大的秩和"},{"key":"C","text":"样本含量较小组的秩和"},{"key":"D","text":"样本含量较大组的秩和"},{"key":"E","text":"任取一组的秩和均可"}],"answer":"C","explanation":""},{"id":206,"q":"欲比较甲、乙两种类型气管炎疗效(控制、显效、有效、无效)间的差异,宜选用:","options":[{"key":"A","text":"Wilcoxon符号秩和检验"},{"key":"B","text":"卡方检验"},{"key":"C","text":"Wilcoxon秩和检验"},{"key":"D","text":"Fridman M检验"},{"key":"E","text":"Kruskal Wills H检验"}],"answer":"C","explanation":""},{"id":207,"q":"定量资料两组比较的假设检验,首先应考虑:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"秩和检验"},{"key":"C","text":"方差分析"},{"key":"D","text":"资料符合t检验还是秩和检验的条件"},{"key":"E","text":"χ2检验"}],"answer":"D","explanation":""},{"id":208,"q":"两样本秩和检验,若n1=12,T1=3,n2=10,T2=80,查T界值表0.05检验水准对应的T界值范围为84~146,则P值为:","options":[{"key":"A","text":"P>0.05"},{"key":"B","text":"P<0.05"},{"key":"C","text":"P=0.05"},{"key":"D","text":"P≤0.05"},{"key":"E","text":"P≥0.05"}],"answer":"B","explanation":""},{"id":209,"q":"以下方法中属于参数检验方法的是:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"H检验"},{"key":"C","text":"M检验"},{"key":"D","text":"Wilcoxon符号秩和检验"},{"key":"E","text":"Wilcoxon秩和检验"}],"answer":"A","explanation":""},{"id":210,"q":"两组定量资料的比较,若已知n1、n2均小于30,总体方差不齐且呈极度偏态分布,宜采用:","options":[{"key":"A","text":"t’检验"},{"key":"B","text":"H检验"},{"key":"C","text":"M检验"},{"key":"D","text":"Wilcoxon符号秩和检验"},{"key":"E","text":"Wilcoxon秩和检验"}],"answer":"E","explanation":""},{"id":211,"q":"样本均数与已知总体均数比较进行假设检验时,无效假设是:","options":[{"key":"A","text":"样本均数与总体均数相同"},{"key":"B","text":"样本均数与总体均数不同"},{"key":"C","text":"样本代表的未知总体均数与总体均数相同"},{"key":"D","text":"样本代表的未知总体均数与总体均数不同"},{"key":"E","text":"样本均数与已知总体抽取的样本均数相同"}],"answer":"C","explanation":"假设检验的基本原理,无效假设H0又称为零假设、原假设,指两总体均数相同。"},{"id":212,"q":"样本均数与已知总体均数比较进行假设检验时,备择假设是:","options":[{"key":"A","text":"样本均数与总体均数相同"},{"key":"B","text":"样本均数与总体均数不同"},{"key":"C","text":"样本代表的未知总体均数与总体均数相同"},{"key":"D","text":"样本代表的未知总体均数与总体均数不同"},{"key":"E","text":"样本均数与已知总体抽取的样本均数相同"}],"answer":"D","explanation":"假设检验的基本原理,备择假设H1指两总体均数不同。"},{"id":213,"q":"检验水准是指:","options":[{"key":"A","text":"1-β"},{"key":"B","text":"β"},{"key":"C","text":"α"},{"key":"D","text":"1-α"},{"key":"E","text":"β+α"}],"answer":"C","explanation":"检验水准用α表示"},{"id":214,"q":"假设检验时,用单侧检验还是双侧检验的依据:","options":[{"key":"A","text":"检验水准的大小"},{"key":"B","text":"研究者的意愿"},{"key":"C","text":"专业知识判断"},{"key":"D","text":"数据资料的分布类型"},{"key":"E","text":"数据类型"}],"answer":"C","explanation":"根据常识或专业知识判断用单侧还是双侧检验"},{"id":215,"q":"假设检验的步骤中,单侧检验与双侧检验的不同点在于:","options":[{"key":"A","text":"根据检验水准查界值不同"},{"key":"B","text":"计算公式不同"},{"key":"C","text":"检验水准不同"},{"key":"D","text":"查得界值与统计量比较方法不同"},{"key":"E","text":"自由度的计算不同"}],"answer":"A","explanation":"单侧检验与双侧检验在假设检验步骤中,不同处有H1、查得界值、所得结论可能相同也可能不同。"},{"id":216,"q":"对第一类错误说法正确的是:","options":[{"key":"A","text":"拒绝了实际上成立的H0"},{"key":"B","text":"不拒绝实际上不成立的H0"},{"key":"C","text":"又称为β错误"},{"key":"D","text":"又称为存伪错误"},{"key":"E","text":"又称为检验效能"}],"answer":"A","explanation":"第一类错误又称为I型错误、α错误、弃真错误,拒绝了实际上成立的H0"},{"id":217,"q":"对第二类错误说法正确的是:","options":[{"key":"A","text":"拒绝了实际上成立的H0"},{"key":"B","text":"不拒绝实际上不成立的H0"},{"key":"C","text":"又称为α错误"},{"key":"D","text":"又称为弃真错误"},{"key":"E","text":"又称为检验效能"}],"answer":"B","explanation":"第二类错误又称为II型错误、β错误、存伪错误,不拒绝了实际上不成立的H0"},{"id":218,"q":"第一类错误是指()错误:","options":[{"key":"A","text":"1-β"},{"key":"B","text":"β"},{"key":"C","text":"α"},{"key":"D","text":"1-α"},{"key":"E","text":"β+α"}],"answer":"C","explanation":"第一类错误又称为I型错误、α错误"},{"id":219,"q":"误诊率是指:","options":[{"key":"A","text":"β错误"},{"key":"B","text":"α错误"},{"key":"C","text":"第二类错误"},{"key":"D","text":"1-α"},{"key":"E","text":"1-β"}],"answer":"B","explanation":"正常人诊断为病人,弃真,所以是第一类错误又称为I型错误、α错误"},{"id":220,"q":"对检验效能说法错误的是:","options":[{"key":"A","text":"两总体确有差异,根据检验水准发现这种差异的能力"},{"key":"B","text":"β越小,检验效能越大"},{"key":"C","text":"又称为把握度"},{"key":"D","text":"用1-β表示"},{"key":"E","text":"检验效能越高,犯错误的概率越小"}],"answer":"E","explanation":"检验效能越高,即1-β越大,β越小,此时推断结论犯α错误的错误会越大,犯β错误越小。因此不能笼统说犯错误的概率越小。"},{"id":221,"q":"两样本均数比较时,分别取以下检验水准,α选择以下哪项时所对应的第二类错误最小?","options":[{"key":"A","text":"0.01"},{"key":"B","text":"0.05"},{"key":"C","text":"0.10"},{"key":"D","text":"0.20"},{"key":"E","text":"0.25"}],"answer":"E","explanation":"样本量确定的情况下,α增大β减少,反之α减少β增大。所以第二类错误最小即β最小,则α应最大。"},{"id":222,"q":"在比较两样本均数的假设检验中,结果t=3.24，t0.05,v=2.086，t0.01,v=2.845。正确的结论是:","options":[{"key":"A","text":"两样本均数不同"},{"key":"B","text":"两样本均数差异很大"},{"key":"C","text":"两总体均数差异很大"},{"key":"D","text":"两样本均数来自同一总体"},{"key":"E","text":"两样本均数来自不同总体"}],"answer":"E","explanation":"t值大于t界值,所以P小于0.05,所以拒绝H0,接受H1,可认为两总体均数不同,样本来自不同的总体。"},{"id":223,"q":"在比较两样本均数的假设检验中,若检验统计量t值越大,则结论为:","options":[{"key":"A","text":"P值越小,越有理由认为两样本均数不同"},{"key":"B","text":"P值越小,越有理由认为两样本均数差异很大"},{"key":"C","text":"P值越大,越有理由认为两总体均数差异很大"},{"key":"D","text":"P值越大,越有理由认为两样本均数来自同一总体"},{"key":"E","text":"P值越小,越有理由认为两样本均数来自不同总体"}],"answer":"E","explanation":"p的含义,p值越小,越有理由认为H0不成立,H1成立。"},{"id":224,"q":"假设检验时,犯第二类错误最小的是:。","options":[{"key":"A","text":"α=0.05"},{"key":"B","text":"α=0.01"},{"key":"C","text":"α=0.15"},{"key":"D","text":"α=0.20"},{"key":"E","text":"α=0.30"}],"answer":"E","explanation":"样本量确定的情况下,α增大β减少,反之α减少β增大。所以第二类错误最小即β最小,则α应最大。"},{"id":225,"q":"关于假设检验,下列叙述正确的是:","options":[{"key":"A","text":"单侧检验优于双侧检验"},{"key":"B","text":"采用配对t检验还是成组t检验由实验设计方法决定"},{"key":"C","text":"检验结果若P值大于0.05,则不拒绝H0犯错误的可能性很小"},{"key":"D","text":"两样本均数比较时,不要求方差齐性"},{"key":"E","text":"由于配对t检验的效率高于成组t检验,因此最好都用配对t检验"}],"answer":"B","explanation":"检验方法都是要根据实验设计、资料类型、检验应用的条件等决定。"},{"id":226,"q":"定量资料,配对t检验的无效假设(双侧检验)为:。","options":[{"key":"A","text":"μd=0"},{"key":"B","text":"μd≠0"},{"key":"C","text":"μ1=μ2"},{"key":"D","text":"μ1≠μ2"},{"key":"E","text":"μ=μ0"}],"answer":"A","explanation":"无效假设,未知总体的差值为0"},{"id":227,"q":"作假设检验时,下列叙述哪项正确:","options":[{"key":"A","text":"有统计意义时,则一定有实际意义"},{"key":"B","text":"有实际意义时,则一定得出有统计意义"},{"key":"C","text":"有统计意义时,可能也有实际意义"},{"key":"D","text":"无统计意义时,也一定无实际意义"},{"key":"E","text":"无实际意义时,也一定无统计意义"}],"answer":"C","explanation":"统计学意义与实际或专业意义有一定的差异,查看假设检验与置信区间的区别与联系。"},{"id":228,"q":"正态性检验时,为了减少第Ⅱ类错误的概率,检验水准取下列哪种好:","options":[{"key":"A","text":"α=0.01"},{"key":"B","text":"α=0.05"},{"key":"C","text":"α=0.10"},{"key":"D","text":"α=0.20"},{"key":"E","text":"α=0.02"}],"answer":"D","explanation":"样本量确定的情况下,α增大β减少,反之α减少β增大。所以第二类错误最小即β最小,则α应最大。"},{"id":229,"q":"关于假设检验和统计学意义,下列叙述不正确的是:","options":[{"key":"A","text":"资料须符合随机的原则"},{"key":"B","text":"资料须具有可比性"},{"key":"C","text":"t检验条件必须满足两总体的方差相等"},{"key":"D","text":"差别有统计学意义说明比较的两样本来自不同总体"},{"key":"E","text":"差别有统计学意义说明比较的两总体差别较大"}],"answer":"E","explanation":""},{"id":230,"q":"下列关于Ι型错误(第一类错误)和Ⅱ型错误(第二类错误),叙述不正确的是:","options":[{"key":"A","text":"Ⅰ型错误的概率用α表示"},{"key":"B","text":"Ⅱ型错误的概率用β表示"},{"key":"C","text":"样本量固定时,Ⅰ型错误的概率越大,Ⅱ型错误的概率也越大"},{"key":"D","text":"样本量固定时,Ⅰ型错误的概率越大,Ⅱ型错误的概率越小"},{"key":"E","text":"要同时减小Ⅰ型错误和Ⅱ型错误的概率,需增大样本量"}],"answer":"C","explanation":"参考两类错误的区别与联系"},{"id":231,"q":"两样本均数比较,经t检验,差别有统计学意义,P越小说明:","options":[{"key":"A","text":"两样本均数差别越大"},{"key":"B","text":"两总体均数差别越大"},{"key":"C","text":"越有理由认为两总体均数不同"},{"key":"D","text":"越有理由认为两样本均数差值大于0"},{"key":"E","text":"越有理由认为两样本均数有差异"}],"answer":"C","explanation":"判断的一定是总体是否相同"},{"id":232,"q":"在两样本均数的t检验中,备择假设H1是( )。","options":[{"key":"A","text":"两样本均数相等"},{"key":"B","text":"两总体均数相等"},{"key":"C","text":"两总体均数不相等"},{"key":"D","text":"两样本均数差别无统计学意义"},{"key":"E","text":"两总体均数差别无统计学意义"}],"answer":"C","explanation":"备择假设一定是两总体不相同。"},{"id":233,"q":"12名妇女分别用两种仪器测量肺活量最大呼气率(1/min),若该资料符合参数检验条件,现比较两种方法检测结果有无差别,可选择:","options":[{"key":"A","text":"单样本t检验"},{"key":"B","text":"成组设计t检验"},{"key":"C","text":"成组设计Z检验"},{"key":"D","text":"配对设计t检验"},{"key":"E","text":"配对设计秩和检验"}],"answer":"D","explanation":"配对设计的一种设计类型,同一样品采用不同的方法检测,比较两种检测方法是否相同。"},{"id":234,"q":"关于检验效能,下列叙述错误的是:","options":[{"key":"A","text":"两总体均数确有差别时,按α水准发现这种差别的能力"},{"key":"B","text":"两总体均数确有差别时,按1‐β水准发现这种差别的能力"},{"key":"C","text":"与α有关"},{"key":"D","text":"与样本例数有关"},{"key":"E","text":"与两总体均数间的位置有关"}],"answer":"B","explanation":"检验效能的含义及计算公式"},{"id":235,"q":"假设检验中,P与α的关系是:","options":[{"key":"A","text":"P越大,α越大"},{"key":"B","text":"P越大,α越小"},{"key":"C","text":"二者均事先确定"},{"key":"D","text":"二者均需通过计算机确定"},{"key":"E","text":"P值的大小与α的大小无关"}],"answer":"E","explanation":"检验水准α是事先确定的,p值是根据数据计算得出的,通过p与α的比较,判断H0成立还是H1成立。"},{"id":236,"q":"某假设检验,检验水准为0.05,经计算P<0.05,拒绝H0,此时若推断有错,其错误的概率为:","options":[{"key":"A","text":"0.01"},{"key":"B","text":"0.95"},{"key":"C","text":"β,β=0.01"},{"key":"D","text":"β,β未知"},{"key":"E","text":"α,α=0.05"}],"answer":"E","explanation":"拒绝H0,弃真错误,α错误,所以是0.05"},{"id":237,"q":"已知某地正常人某定量指标的总体均值μ0=5,今随机测得该地特殊人群中的30人该指标的数值。若用t检验推断该特殊人群该指标的总体均值μ与μ0之间是否有差别,则自由度为:","options":[{"key":"A","text":"5"},{"key":"B","text":"28"},{"key":"C","text":"29"},{"key":"D","text":"4"},{"key":"E","text":"30"}],"answer":"C","explanation":"自由度n-1"},{"id":238,"q":"假设检验的一般步骤中不包括下列哪项:","options":[{"key":"A","text":"建立检验假设,确定检验水准"},{"key":"B","text":"对总体参数的置信区间做出估计"},{"key":"C","text":"选定检验方法,计算检验统计量"},{"key":"D","text":"确定P值,作出统计推断结论"},{"key":"E","text":"直接计算P值"}],"answer":"B","explanation":"置信区间的估计不包括在假设检验步骤中。"},{"id":239,"q":"关于假设检验,下列叙述正确的是:","options":[{"key":"A","text":"备择假设用H0表示"},{"key":"B","text":"检验水准的符号为β"},{"key":"C","text":"P可以事先确定"},{"key":"D","text":"一定要计算检验统计量"},{"key":"E","text":"假设检验是针对总体的特征进行"}],"answer":"E","explanation":"统计推断是推断总体特征"},{"id":240,"q":"假设检验,当P<0.05,拒绝原假设时,其依据是:","options":[{"key":"A","text":"原假设本身是人为的,应当拒绝"},{"key":"B","text":"计算结果证明原假设是错误"},{"key":"C","text":"原假设成立是完全荒谬的"},{"key":"D","text":"原假设成立的可能性很小"},{"key":"E","text":"原假设不可能成立"}],"answer":"D","explanation":"P值的含义。"},{"id":241,"q":"第一类错误是指:","options":[{"key":"A","text":"拒绝实际上并不成立的H0"},{"key":"B","text":"不拒绝实际上并不成立的H0"},{"key":"C","text":"拒绝实际上是成立的H0"},{"key":"D","text":"接受实际上是成立的H0"},{"key":"E","text":"拒绝实际上并不成立的H1"}],"answer":"C","explanation":"两类错误的概念"},{"id":242,"q":"某医学资料数据大的一端没有确定数值,描述其集中趋势适用的统计指标是:","options":[{"key":"A","text":"M"},{"key":"B","text":"G"},{"key":"C","text":"均数"},{"key":"D","text":"p95"},{"key":"E","text":"CV"}],"answer":"A","explanation":"集中趋势指标的应用条件"},{"id":243,"q":"对于正态分布资料,理论上:","options":[{"key":"A","text":"均数比中位数大"},{"key":"B","text":"均数比中位数小"},{"key":"C","text":"均数等于中位数"},{"key":"D","text":"均数与中位数无法确定孰大孰小"},{"key":"E","text":"以上说法均不正确"}],"answer":"C","explanation":"正态分布特征"},{"id":244,"q":"下面哪种资料适合于计算算术均数:","options":[{"key":"A","text":"抗体滴度"},{"key":"B","text":"百分制学习成绩"},{"key":"C","text":"性别"},{"key":"D","text":"食物中毒潜伏期"},{"key":"E","text":"学历"}],"answer":"B","explanation":"连续型定量资料,服从正态分布"},{"id":245,"q":"中位数是指:","options":[{"key":"A","text":"P50"},{"key":"B","text":"P25"},{"key":"C","text":"P10"},{"key":"D","text":"P100"},{"key":"E","text":"P75"}],"answer":"A","explanation":"由中位数定义,累计频率到50%对应的数据,即百分位数P50"},{"id":246,"q":"下面哪种资料适合于计算中位数:","options":[{"key":"A","text":"性别"},{"key":"B","text":"血压"},{"key":"C","text":"血中抗体滴度"},{"key":"D","text":"血中某农药含量"},{"key":"E","text":"血型"}],"answer":"D","explanation":"符合中位数适用条件:偏态分布"},{"id":247,"q":"已知某传染病患者8人的潜伏期(天)分别为10、12、15、16、18、25、28、30则中位潜伏期(天)为","options":[{"key":"A","text":"16"},{"key":"B","text":"15"},{"key":"C","text":"20"},{"key":"D","text":"18"},{"key":"E","text":"17"}],"answer":"E","explanation":"中位数定义,从小到大排列,位次居中的数据,偶数个数据时中间两者平均数"},{"id":248,"q":"正态分布曲线下横轴上,从-∞到μ+1.96σ的区间面积占总面积的:","options":[{"key":"A","text":"90.0 %"},{"key":"B","text":"95.0 %"},{"key":"C","text":"97.5 %"},{"key":"D","text":"99.0 %"},{"key":"E","text":"99.5 %"}],"answer":"C","explanation":"正态分布曲线下面积"},{"id":249,"q":"调查某地某工厂100名工人发汞含量,计算的适宜平均指标是:","options":[{"key":"A","text":"P25"},{"key":"B","text":"算术均数"},{"key":"C","text":"P75"},{"key":"D","text":"中位数"},{"key":"E","text":"几何均数"}],"answer":"D","explanation":"发汞含量在人群体内分布是正偏态分布,因为平均指标用中位数。"},{"id":250,"q":"人体中麻疹抗体滴度含量,适宜计算的平均指标是:","options":[{"key":"A","text":"几何均数"},{"key":"B","text":"变异系数"},{"key":"C","text":"算术均数"},{"key":"D","text":"百分位数"},{"key":"E","text":"中位数"}],"answer":"A","explanation":"抗体滴度是等比或倍数关系的数据,所以用几何均数。"},{"id":251,"q":"人体内血铅含量,适宜计算的平均指标是:","options":[{"key":"A","text":"中位数"},{"key":"B","text":"变异系数"},{"key":"C","text":"算术均数"},{"key":"D","text":"百分位数"},{"key":"E","text":"几何均数"}],"answer":"A","explanation":"血铅含量在人群体内分布是正偏态分布,因为平均指标用中位数"},{"id":252,"q":"若数据为偏态分布,则计算的常用平均数指标是:","options":[{"key":"A","text":"中位数"},{"key":"B","text":"变异系数"},{"key":"C","text":"几何均数"},{"key":"D","text":"百分位数"},{"key":"E","text":"算术均数"}],"answer":"A","explanation":"中位数适用条件:偏态分布"},{"id":253,"q":"当资料两端含有不确定值时,描述其变异度宜采用:","options":[{"key":"A","text":"R"},{"key":"B","text":"CV"},{"key":"C","text":"G"},{"key":"D","text":"S"},{"key":"E","text":"Q"}],"answer":"E","explanation":"变异度指标的应用条件"},{"id":254,"q":"关于标准差,错误的是:","options":[{"key":"A","text":"反映全部观察值的离散程度"},{"key":"B","text":"度量了一组数据偏离均数的大小"},{"key":"C","text":"反映了均数代表性的好坏"},{"key":"D","text":"一定大于或等于零"},{"key":"E","text":"不会小于算术均数"}],"answer":"E","explanation":"标准差公式及意义"},{"id":255,"q":"正态曲线下,横轴上均数±1.96标准差范围内的面积是总面积的:","options":[{"key":"A","text":"99%"},{"key":"B","text":"5%"},{"key":"C","text":"90%"},{"key":"D","text":"95%"},{"key":"E","text":"97.5%"}],"answer":"D","explanation":"正态分布曲线下面积"},{"id":256,"q":"比较老鼠与大象的体重变异度大小,宜采用:","options":[{"key":"A","text":"标准差"},{"key":"B","text":"方差"},{"key":"C","text":"极差"},{"key":"D","text":"四分位数间距"},{"key":"E","text":"变异系数"}],"answer":"E","explanation":"两者体重均数差别很大,导致标准差无法直接比较离散程度。"},{"id":257,"q":"四分位数间距是指:","options":[{"key":"A","text":"Q2-Q1"},{"key":"B","text":"Q3-Q1"},{"key":"C","text":"Q3-Q2"},{"key":"D","text":"P100-P1"},{"key":"E","text":"P50-P25"}],"answer":"B","explanation":"四分位数间距= P75-P25= Q3-Q1= QL-Qu"},{"id":259,"q":"表示一组数据离散程度,稳定、全面且单位与原数据相同的指标是:","options":[{"key":"A","text":"极差"},{"key":"B","text":"四分位数间距"},{"key":"C","text":"CV"},{"key":"D","text":"方差"},{"key":"E","text":"标准差"}],"answer":"E","explanation":"标准差的意义"},{"id":260,"q":"表示一组数据分散程度,最简单易懂易算的指标是:","options":[{"key":"A","text":"方差"},{"key":"B","text":"标准差"},{"key":"C","text":"CV"},{"key":"D","text":"四分位数间距"},{"key":"E","text":"极差"}],"answer":"E","explanation":"离散程度指标中最简单的就是极差。"},{"id":261,"q":"非正态分布数据制定医学参考值范围的方法是:","options":[{"key":"A","text":"百分位数法"},{"key":"B","text":"正态分布法"},{"key":"C","text":"构成比较法"},{"key":"D","text":"标准化法"},{"key":"E","text":"动态数列法"}],"answer":"A","explanation":"参考值范围计算方法有两种正态分布法与百分位数法。非正态分布数据采用百分位数法。"},{"id":262,"q":"设数据为非正态分布,双侧95%参考值范围的公式是:","options":[{"key":"A","text":"均数±1.64×标准差"},{"key":"B","text":"均数±1×标准差"},{"key":"C","text":"P2.5-P97.5"},{"key":"D","text":">P5"},{"key":"E","text":"均数±1.96×标准差"}],"answer":"C","explanation":"参考值范围计算方法有两种正态分布法与百分位数法。非正态分布数据采用百分位数法。计算95%双侧参考值范围要去掉两侧尾部各2.5%的数据。"},{"id":263,"q":"当两个相同单位数据的均数相差很大时,计算变异度的较好指标是:","options":[{"key":"A","text":"方差"},{"key":"B","text":"Q"},{"key":"C","text":"极差"},{"key":"D","text":"变异系数"},{"key":"E","text":"标准差"}],"answer":"D","explanation":"变异系数的用途"},{"id":264,"q":"下列哪个指标不属于变异指标:","options":[{"key":"A","text":"中位数"},{"key":"B","text":"标准差"},{"key":"C","text":"全距"},{"key":"D","text":"四分位间距"},{"key":"E","text":"变异系数"}],"answer":"A","explanation":"集中趋势指标有均数、中位数、几何均数等;离散趋势指标有极差、四分位数间距、方差与标准差、变异系数。"},{"id":265,"q":"若数据为正态分布,双侧95%参考值范围的公式是:","options":[{"key":"A","text":">P5"},{"key":"B","text":"P2.5-P97.5"},{"key":"C","text":"均数±1×标准差"},{"key":"D","text":"均数±1.64×标准差"},{"key":"E","text":"均数±1.96×标准差"}],"answer":"E","explanation":"参考值范围计算方法有两种正态分布法与百分位数法。正态分布数据采用正态分布法。计算95%双侧参考值范围均数加减1.96个标准差。"},{"id":266,"q":"若上海市健康女工744人血红蛋白含量的均数为12.239g,标准差为0.998g,则下列哪个是医学参考值范围:","options":[{"key":"A","text":"11.24-11.3237"},{"key":"B","text":"9.654-14.814"},{"key":"C","text":"10.283-14.195"},{"key":"D","text":"10.592-13.886"},{"key":"E","text":"10.952-13.516"}],"answer":"C","explanation":""},{"id":267,"q":"用来描述偏态分布资料特征的两个指标是:","options":[{"key":"A","text":"均数和中位数"},{"key":"B","text":"均数和标准差"},{"key":"C","text":"均数和极差"},{"key":"D","text":"中位数和四分位数间距"},{"key":"E","text":"几何均数和标准差"}],"answer":"D","explanation":""},{"id":268,"q":"若上海市健康女工744人血红蛋白含量的均数为12.25g,标准差为1.02g,则下列哪个是95%的医学参考值范围:","options":[{"key":"A","text":"11.24-11.33"},{"key":"B","text":"9.65-14.81"},{"key":"C","text":"10.28-14.20"},{"key":"D","text":"10.25-14.25"},{"key":"E","text":"10.95-13.52"}],"answer":"D","explanation":"参考值范围的正态分布法计算公式"},{"id":270,"q":"以下方法中,确定医学参考值范围的最好方法是:","options":[{"key":"A","text":"百分位数法"},{"key":"B","text":"正态分布法"},{"key":"C","text":"对数正态分布法"},{"key":"D","text":"标准化法"},{"key":"E","text":"结合原始数据分布类型选择相应的方法"}],"answer":"E","explanation":"计算参考值范围两种方法:正态分布法与百分位数法,主要根据数据的分布类型选择合适的方法。"},{"id":271,"q":"下列对于正态分布曲线的描述,正确的是:","options":[{"key":"A","text":"当σ不变时,随着μ增大,曲线向右移"},{"key":"B","text":"当σ不变时,随着μ增大,曲线向左移"},{"key":"C","text":"当μ不变时,随着σ增大,曲线向右移"},{"key":"D","text":"当μ不变时,随着σ增大,曲线将变的越来越高越来瘦"},{"key":"E","text":"以上说法均不正确"}],"answer":"A","explanation":"正态分布的特征,位置参数"},{"id":272,"q":"横轴上,正态分布曲线下从μ-2.58σ到μ的面积为:","options":[{"key":"A","text":"95%"},{"key":"B","text":"45%"},{"key":"C","text":"97.5%"},{"key":"D","text":"47.5%"},{"key":"E","text":"49.5%"}],"answer":"E","explanation":"正态分布曲线下的面积规律"},{"id":273,"q":"在正态曲线,下列关于μ-1.96σ到曲线对称轴的面积是:","options":[{"key":"A","text":"90%"},{"key":"B","text":"10%"},{"key":"C","text":"5%"},{"key":"D","text":"45%"},{"key":"E","text":"47.5%"}],"answer":"E","explanation":"正态分布曲线下的面积规律"},{"id":274,"q":"标准正态曲线下,中间95%的面积所对应的横轴范围是:","options":[{"key":"A","text":"-∞到+1.96"},{"key":"B","text":"-1.96到+1.96"},{"key":"C","text":"-∞到+2.58"},{"key":"D","text":"-2.58到+2.58"},{"key":"E","text":"-1.64到+1.64"}],"answer":"B","explanation":"正态分布曲线下的面积规律"},{"id":275,"q":"下列关于医学参考值范围的说法中正确的是:","options":[{"key":"A","text":"医学参考值范围是根据大部分“健康人”的某项指标制定的"},{"key":"B","text":"医学参考值范围的制定方法不受分布资料类型的限制"},{"key":"C","text":"在制定医学参考值范围时,最好用95%范围,因为这个范围最能说明医学问题"},{"key":"D","text":"在制定医学参考值范围时,最好用95%范围,因为这代表了大多数人"},{"key":"E","text":"以上说法均不正确"}],"answer":"A","explanation":"医学参考值范围的含义"},{"id":276,"q":"确定正常人某个指标的参考值范围时,调查对象是:","options":[{"key":"A","text":"从未患过病的人"},{"key":"B","text":"健康达到了要求的人"},{"key":"C","text":"排除影响被研究指标的疾病和因素的人"},{"key":"D","text":"只患过小病但不影响被研究指标的人"},{"key":"E","text":"排除了患过某病或接触过某因素的人"}],"answer":"C","explanation":"医学参考值范围的含义"},{"id":277,"q":"某资料的观察值呈正态分布,理论上有( )的观察值落在“均数±标准差”范围内。","options":[{"key":"A","text":"68.27%"},{"key":"B","text":"90%"},{"key":"C","text":"95%"},{"key":"D","text":"99%"},{"key":"E","text":"45%"}],"answer":"A","explanation":"正态分布曲线下的面积规律及参考值范围的含义"},{"id":278,"q":"正态分布N(μ,σ2),当μ恒定时,σ越小:","options":[{"key":"A","text":"曲线沿横轴越向左移动"},{"key":"B","text":"曲线沿横轴越向右移动"},{"key":"C","text":"观察值变异程度越大,曲线越“矮胖”"},{"key":"D","text":"观察值变异程度越小,曲线越“高瘦”"},{"key":"E","text":"曲线形状和位置不变"}],"answer":"D","explanation":"正态分布的特征,形状参数"},{"id":279,"q":"根据500例正常人的发铅值原始数据(正偏态分布),计算其95%医学参考值范围应采用:","options":[{"key":"A","text":"双侧正态分布法"},{"key":"B","text":"双侧百分位数法"},{"key":"C","text":"单上侧正态分布法"},{"key":"D","text":"单下侧百分位数法"},{"key":"E","text":"单上侧百分位数法"}],"answer":"E","explanation":"根据数据为偏态分布,选择百分位数法计算"},{"id":280,"q":"在正态曲线下,大于μ-2.58σ包含的面积为:","options":[{"key":"A","text":"1%"},{"key":"B","text":"99%"},{"key":"C","text":"0.5%"},{"key":"D","text":"0.05%"},{"key":"E","text":"99.5%"}],"answer":"E","explanation":"正态分布曲线下的面积规律"},{"id":281,"q":"横轴上,正态曲线下从μ到μ+1.96σ的面积为:","options":[{"key":"A","text":"95%"},{"key":"B","text":"45%"},{"key":"C","text":"97.5%"},{"key":"D","text":"47.5%"},{"key":"E","text":"49.5%"}],"answer":"D","explanation":"正态分布曲线下的面积规律"},{"id":282,"q":"为了制定尿铅（正偏态分布）的参考值范围,测定了一批正常人的尿铅含量,下列说法正确的是:","options":[{"key":"A","text":"无法制定,要制定参考值范围必须测定健康人的尿铅含量"},{"key":"B","text":"可以制定,应为单侧上限"},{"key":"C","text":"可以制定,应为单侧下限"},{"key":"D","text":"可以制定,但是无法确定是上侧范围还是下侧范围"},{"key":"E","text":"可以制定双侧95%的参考值范围"}],"answer":"B","explanation":"根据数据为偏态分布,选择百分位数法计算参考值范围,又因铅含量属于要求低于某个值,所以计算上限值。"},{"id":283,"q":"标准正态分布的均数与标准差分别为:","options":[{"key":"A","text":"0,1"},{"key":"B","text":"1,0"},{"key":"C","text":"0,0"},{"key":"D","text":"1,1"},{"key":"E","text":"0.5,1"}],"answer":"A","explanation":"标准正态分布的特征,位置与形状参数"},{"id":284,"q":"健康男子收缩压的参考值范围是指:","options":[{"key":"A","text":"所有健康成年男子收缩压的波动范围"},{"key":"B","text":"绝大多数正常成年男子收缩压的波动范围"},{"key":"C","text":"所有正常成年男子收缩压的波动范围"},{"key":"D","text":"少部分正常成年男子收缩压的波动范围"},{"key":"E","text":"所有正常人收缩压的波动范围"}],"answer":"B","explanation":"参考值范围概念"},{"id":285,"q":"下列关于正态分布曲线的两参数μ和σ的说法,正确的是:","options":[{"key":"A","text":"μ和σ越接近于0时,曲线越扁平"},{"key":"B","text":"曲线形状只与μ有关,μ越大,曲线越扁平"},{"key":"C","text":"曲线形状只与σ有关,σ越大,曲线越扁平"},{"key":"D","text":"曲线形状与两者均无关,绘图者可以随意画"},{"key":"E","text":"以上说法均不正确"}],"answer":"C","explanation":"正态分布的特征,位置与形状参数"},{"id":286,"q":"下列关于标准正态分布的说法中错误的是:","options":[{"key":"A","text":"标准正态分布曲线下总面积为1"},{"key":"B","text":"标准正态分布是μ=0并且σ=1的正态分布"},{"key":"C","text":"任何一种资料只要通过Z变换均能变成标准正态分布"},{"key":"D","text":"标准正态分布的曲线是唯一的"},{"key":"E","text":"因为标准正态分布是对称分布,所以Z≥-1.96与Z≤1.96所对应的曲线下面积相等。"}],"answer":"C","explanation":"只有服从正态分布且标准差已知,或者样本含量比较大的资料才可通过z转换"},{"id":287,"q":"估计医学参考值范围时,哪项说法是错误的:","options":[{"key":"A","text":"“正常人”是指排除了对研究指标有影响的疾病和因素的人"},{"key":"B","text":"需要足够数量,通常样本含量在100例以上"},{"key":"C","text":"“正常”是指健康,没有疾病"},{"key":"D","text":"需要考虑样本的同质性"},{"key":"E","text":"对于某些指标组间差别明显且有实际意义的,应先确定分组,再分别估计医学参考值范围"}],"answer":"C","explanation":"参考值范围的定义中,对“正常”定义并不是一定健康,而是指研究的指标正常即为“正常人”。"},{"id":288,"q":"标准正态分布的方差等于:","options":[{"key":"A","text":"0"},{"key":"B","text":"1"},{"key":"C","text":"1.64"},{"key":"D","text":"1.96"},{"key":"E","text":"2.58"}],"answer":"B","explanation":"标准正态分布的特征,位置与形状参数"},{"id":290,"q":"表示抽样误差大小的指标是:","options":[{"key":"A","text":"标准差"},{"key":"B","text":"两均数差"},{"key":"C","text":"方差"},{"key":"D","text":"离均差平方和"},{"key":"E","text":"标准误"}],"answer":"E","explanation":"标准误的含义"},{"id":291,"q":"均数的标准误反映(D)。","options":[{"key":"A","text":"个体的变异程度"},{"key":"B","text":"集中趋势的位置"},{"key":"C","text":"指标的分布特征"},{"key":"D","text":"样本均数与总体均数的差异"},{"key":"E","text":"频数分布规律"}],"answer":"D","explanation":"标准误的含义"},{"id":292,"q":"均数的标准误大小(n为样本含量),以下叙述正确的是:","options":[{"key":"A","text":"与σ的大小成正比,与n成反比"},{"key":"B","text":"与σ的大小成反比,与n成正比"},{"key":"C","text":"与σ的大小成反比,与n的平方根成正比"},{"key":"D","text":"与σ的大小成正比,与n的平方根成反比"},{"key":"E","text":"与σ的大小成正比,与n的平方根成正比"}],"answer":"D","explanation":"标准误的计算公式"},{"id":293,"q":"标准差与标准误的关系中,正确的是:","options":[{"key":"A","text":"二者均反映抽样误差的大小"},{"key":"B","text":"总体标准差不变时,增大样本例数可以减小标准误"},{"key":"C","text":"总体标准差增大时,总体的标准误也增大"},{"key":"D","text":"样本例数增大时,样本的标准差和标准误都会减小"},{"key":"E","text":"标准差用于计算置信区间,标准误用于计算参考值范围"}],"answer":"B","explanation":"标准差与标准误的区别"},{"id":294,"q":"标准误越大,则表示此次抽样得到的样本均数:","options":[{"key":"A","text":"系统误差越大"},{"key":"B","text":"可靠程度越大"},{"key":"C","text":"抽样误差越大"},{"key":"D","text":"可比性越差"},{"key":"E","text":"离散程度越大"}],"answer":"C","explanation":"标准误的含义"},{"id":295,"q":"用于描述均数的抽样误差大小的指标是:( )。","options":[{"key":"A","text":"S"},{"key":"B","text":"S/根下n"},{"key":"C","text":"CV"},{"key":"D","text":"R"},{"key":"E","text":"S2"}],"answer":"B","explanation":"标准误的含义"},{"id":296,"q":"从某个定量资料总体中抽样,若加大样本含量,则:","options":[{"key":"A","text":"标准差加大"},{"key":"B","text":"标准差减小"},{"key":"C","text":"标准误不变"},{"key":"D","text":"标准误减少"},{"key":"E","text":"标准误增加"}],"answer":"D","explanation":"标准误的计算公式"},{"id":297,"q":"关于均数的标准误与标准差的区别,下列叙述错误的是:","options":[{"key":"A","text":"均数的标准误反映均数的抽样误差大小"},{"key":"B","text":"标准差反映一组数据的离散程度"},{"key":"C","text":"通过增大样本含量可减小标准误"},{"key":"D","text":"均数的标准误与标准差呈正比"},{"key":"E","text":"标准差可通过统计方法来控制"}],"answer":"E","explanation":"标准误的计算公式"},{"id":298,"q":"t分布的特征中不正确的是:","options":[{"key":"A","text":"呈对称单峰分布"},{"key":"B","text":"分布两边对称并逐渐下降"},{"key":"C","text":"高峰高于标准正态分布"},{"key":"D","text":"分布曲线形状随自由度而确定"},{"key":"E","text":"分布曲线是一簇曲线"}],"answer":"C","explanation":"t分布的曲线规律"},{"id":299,"q":"关于t分布的图形,下述哪项是错误的:","options":[{"key":"A","text":"当υ趋于∞时,标准正态分布是t分布的特例"},{"key":"B","text":"当υ逐渐增大,t分布逐渐逼近标准正态分布"},{"key":"C","text":"υ越小,则t分布的尾部越高"},{"key":"D","text":"t分布是一条以υ为中心左右对称的曲线"},{"key":"E","text":"t分布是一簇曲线,故临界值因自由度的不同而不同"}],"answer":"D","explanation":"t分布的曲线是一簇曲线"},{"id":300,"q":"t分布与正态分布的关系是:","options":[{"key":"A","text":"均以0为中心,左右对称"},{"key":"B","text":"总体均数增大时,分布曲线的中心位置均向右移动"},{"key":"C","text":"曲线下两端5%面积的对应的分位点均是±1.96"},{"key":"D","text":"随样本含量的增大,t分布逼近标准正态分布"},{"key":"E","text":"样本含量无限增大时,二者分布完全一致"}],"answer":"D","explanation":"t分布的曲线是一簇曲线"},{"id":301,"q":"关于t界值表,下列叙述哪项是错误的:","options":[{"key":"A","text":"t界值表横标目为自由度"},{"key":"B","text":"纵标目为概率P"},{"key":"C","text":"表中数字为相应的t界值"},{"key":"D","text":"t值表中在同一自由度下,t值越大则P值越小"},{"key":"E","text":"自由度越大,t值越大,越接近Z值"}],"answer":"E","explanation":"t界值中t值得分布规律"},{"id":302,"q":"置信区间估计的可信度是指:","options":[{"key":"A","text":"a"},{"key":"B","text":"1-a"},{"key":"C","text":"β"},{"key":"D","text":"1-β"},{"key":"E","text":"1-a-β"}],"answer":"B","explanation":"置信区间的预先给定的概率"},{"id":303,"q":"关于置信区间,下列叙述哪项不正确:","options":[{"key":"A","text":"置信区间的准确度反映在置信度1-α的大小"},{"key":"B","text":"置信区间的精度反映在区间的长度"},{"key":"C","text":"在样本例数确定的情况下,上述二者是矛盾的"},{"key":"D","text":"99%置信区间比95%置信区间好"},{"key":"E","text":"在置信度确定的情况下,增加样本例数可提高精度"}],"answer":"D","explanation":"从准确度与精度上来讲,各有优劣势,不能笼统说哪个好那个不好。"},{"id":304,"q":"关于置信区间与假设检验,叙述哪项是错误的:","options":[{"key":"A","text":"置信区间与假设检验各自不同的作用,要结合使用"},{"key":"B","text":"置信区间亦可回答假设检验的问题"},{"key":"C","text":"置信区间还能比假设检验提供更多的信息"},{"key":"D","text":"置信区间并不意味着能够完全代替假设检验"},{"key":"E","text":"假设检验比置信区间重要"}],"answer":"E","explanation":"参考两者区别与联系。各有优劣势,不能笼统说哪个好那个不好。"},{"id":305,"q":"以下关于参数估计的叙述,正确的是:","options":[{"key":"A","text":"区间估计优于点估计"},{"key":"B","text":"样本含量越大,置信区间范围越大"},{"key":"C","text":"样本含量越小,参数估计越精确"},{"key":"D","text":"抽样误差越大,参数估计置信区间越窄"},{"key":"E","text":"标准差大小与置信区间范围无关"}],"answer":"A","explanation":"点估计没有考虑抽样误差的大小,所以常用区间估计。"},{"id":306,"q":"以下关于参数估计的叙述,正确的是:","options":[{"key":"A","text":"CV越小,表示用该样本估计总体均数越可靠"},{"key":"B","text":"标准误越小,表示用该样本估计总体均数的可靠性越差"},{"key":"C","text":"标准误越大,表示用该样本估计总体均数的可靠性越差"},{"key":"D","text":"S越小,表示用该样本估计总体均数越可靠"},{"key":"E","text":"S越大,表示用该样本估计总体均数的可靠性越差"}],"answer":"C","explanation":"参数估计的含义"},{"id":307,"q":"均数95%的置信区间主要用于:","options":[{"key":"A","text":"估计“正常人群”某指标95%观察值所在范围"},{"key":"B","text":"反映总体均数有95%的可能在某范围内"},{"key":"C","text":"反映95%的某指标总体均数的可能取值范围"},{"key":"D","text":"反映某指标的观察值范围"},{"key":"E","text":"反映某指标的95%的样本均数在此范围内"}],"answer":"B","explanation":"置信区间的含义"},{"id":308,"q":"假设某地35岁正常成年男性收缩压的总体均数为120.2mmHg,标准差为11.2mmHg,后者反映的是:","options":[{"key":"A","text":"个体变异的大小"},{"key":"B","text":"抽样误差的大小"},{"key":"C","text":"系统误差的大小"},{"key":"D","text":"总体的平均水平"},{"key":"E","text":"样本的平均水平"}],"answer":"A","explanation":"标准差的含义"},{"id":309,"q":"在置信度确定的条件下,如何来减少区间的宽度:","options":[{"key":"A","text":"增加样本含量"},{"key":"B","text":"用Z界值代替t界值"},{"key":"C","text":"按原来的样本含量重新抽样"},{"key":"D","text":"去掉变异度较大的观察值"},{"key":"E","text":"以上均不正确"}],"answer":"A","explanation":"在可信度一定的情况下,增加样本含量可提高精度,即减少区间宽度。"},{"id":310,"q":"根据样本资料算得健康成人男性身高的95%可信区间为168-172cm,其含义是:","options":[{"key":"A","text":"估计总体中有95%的观察值在此范围内"},{"key":"B","text":"95%的总体均数在该区间内"},{"key":"C","text":"样本中有95%的观察值在此范围内"},{"key":"D","text":"该区间包含样本均数的可能性为95%"},{"key":"E","text":"该区间包含总体均数的可能性为95%"}],"answer":"E","explanation":"置信区间的含义"},{"id":311,"q":"已知某地25岁正常成年男性的平均收缩压为113.0mmHg,从该地随机抽取20名25岁正常成年男性,测得其平均收缩压为119.0mmHg。从同一个地区中再随机抽取20名8岁正常男孩,测的其平均收缩压为90.0mmHg,标准差为9.8mmHg,90.0mmHg与113.0mmHg不同,原因是(C)。","options":[{"key":"A","text":"样本例数太少"},{"key":"B","text":"抽样误差"},{"key":"C","text":"总体均数不同"},{"key":"D","text":"系统误差"},{"key":"E","text":"样本均数不可比"}],"answer":"C","explanation":"8岁男孩收缩压与25岁成年男性的收缩压属于不同的总体,因此是因为总体不同导致的这种差异。"},{"id":312,"q":"已知某地25岁正常成年男性的平均收缩压为113.0mmHg,从该地随机抽取20名25岁正常成年男性,测得其平均收缩压为119.0mmHg。113.0mmHg与119.0mmHg不同,原因是()。","options":[{"key":"A","text":"样本例数太少"},{"key":"B","text":"抽样误差"},{"key":"C","text":"总体均数不同"},{"key":"D","text":"系统误差"},{"key":"E","text":"个体差异太大"}],"answer":"B","explanation":"样本均数与总体均数之间的差异是抽样误差"},{"id":313,"q":"根据样本资料算得健康成人男性身高的95%参考值范围为163~181cm,其含义是:","options":[{"key":"A","text":"该区间包含总体均数的可能性为95%"},{"key":"B","text":"95%的总体均数在该区间内"},{"key":"C","text":"样本中95%的观察值在此范围内"},{"key":"D","text":"该区间包含样本均数的可能性为95%"},{"key":"E","text":"估计总体中有95%的观察值在此范围内"}],"answer":"E","explanation":"参考值范围的含义"},{"id":314,"q":"调查某地某高校大学生血压情况,需要描述血压的频数分布,宜用:","options":[{"key":"A","text":"百分直条图"},{"key":"B","text":"直条图"},{"key":"C","text":"直方图"},{"key":"D","text":"普通线图"},{"key":"E","text":"半对数线图"}],"answer":"C","explanation":""},{"id":315,"q":"描述5个地区生育率的状况,宜用:","options":[{"key":"A","text":"普通线图"},{"key":"B","text":"百分直条图"},{"key":"C","text":"箱式图"},{"key":"D","text":"直方图"},{"key":"E","text":"直条图"}],"answer":"E","explanation":""},{"id":316,"q":"统计表的绘制原则哪一个是错误的:","options":[{"key":"A","text":"统计表有标题"},{"key":"B","text":"统计表的标题放在表的正上方"},{"key":"C","text":"统计表有表序"},{"key":"D","text":"统计表中可使用竖线和斜线"},{"key":"E","text":"统计表中一般有纵标目和横标目"}],"answer":"D","explanation":""},{"id":317,"q":"描述某病死亡率10年的逐年变化趋势,宜用:","options":[{"key":"A","text":"直条图"},{"key":"B","text":"普通线图"},{"key":"C","text":"百分直条图"},{"key":"D","text":"箱式图"},{"key":"E","text":"饼图"}],"answer":"B","explanation":""},{"id":318,"q":"描述医院不同科室床位数的构成比,宜用:","options":[{"key":"A","text":"直条图"},{"key":"B","text":"箱式图"},{"key":"C","text":"圆图"},{"key":"D","text":"普通线图"},{"key":"E","text":"直方图"}],"answer":"C","explanation":""},{"id":319,"q":"统计表的绘制原则中,错误的是:","options":[{"key":"A","text":"统计表中不可使用竖线和斜线"},{"key":"B","text":"统计表的标题放在表的上方"},{"key":"C","text":"统计表中的线条越多越好"},{"key":"D","text":"统计表有表序及标题"},{"key":"E","text":"统计表中一般有纵标目和横标目"}],"answer":"C","explanation":""},{"id":320,"q":"比较某年某地四种病的病死率时,宜绘制:","options":[{"key":"A","text":"普通线图"},{"key":"B","text":"半对数线图"},{"key":"C","text":"直方图"},{"key":"D","text":"百分直条图"},{"key":"E","text":"直条图"}],"answer":"E","explanation":""},{"id":321,"q":"表示连续性变量资料的频数分布宜用:","options":[{"key":"A","text":"普通线图"},{"key":"B","text":"直方图"},{"key":"C","text":"直条图"},{"key":"D","text":"散点图"},{"key":"E","text":"圆图"}],"answer":"B","explanation":""},{"id":322,"q":"为了解定量资料的分布规律和类型,需要编制频数表,并绘制:","options":[{"key":"A","text":"直方图"},{"key":"B","text":"百分条图"},{"key":"C","text":"散点图"},{"key":"D","text":"普通线图"},{"key":"E","text":"圆图"}],"answer":"A","explanation":""},{"id":323,"q":"统计表基本结构要求中可以不出现的是:","options":[{"key":"A","text":"标目"},{"key":"B","text":"线条"},{"key":"C","text":"表序"},{"key":"D","text":"备注"},{"key":"E","text":"数字"}],"answer":"D","explanation":""},{"id":324,"q":"比较某地区小学、初中、高中学生近视眼的患病率,可绘制:","options":[{"key":"A","text":"条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"半对数线图"},{"key":"E","text":"直方图"}],"answer":"A","explanation":""},{"id":325,"q":"表示某市1980和1990年痢疾、肝炎、流脑腮腺炎4种传染病的构成情况,宜采用:","options":[{"key":"A","text":"条图"},{"key":"B","text":"线图"},{"key":"C","text":"直方图"},{"key":"D","text":"百分条图"},{"key":"E","text":"散点图"}],"answer":"D","explanation":""},{"id":326,"q":"表达某地2000年和2010年三种疾病的患病率可用:","options":[{"key":"A","text":"直方图"},{"key":"B","text":"百分直条图"},{"key":"C","text":"单式直条图"},{"key":"D","text":"复式直条图"},{"key":"E","text":"线图"}],"answer":"D","explanation":""},{"id":327,"q":"表示某地区近30年三种疾病的发病率,在各年度的动态发展速度情况,宜绘制:","options":[{"key":"A","text":"直条图"},{"key":"B","text":"普通线图"},{"key":"C","text":"半对数线图"},{"key":"D","text":"百分条图"},{"key":"E","text":"直方图"}],"answer":"C","explanation":""},{"id":328,"q":"比较不同职称护士对绩效改革的满意度评分的均数,需绘制:","options":[{"key":"A","text":"条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"半对数线图"},{"key":"E","text":"直方图"}],"answer":"A","explanation":""},{"id":329,"q":"表示某地区某年各种死因的构成比,可绘制:","options":[{"key":"A","text":"条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"统计地图"},{"key":"E","text":"直方图"}],"answer":"B","explanation":""},{"id":330,"q":"图示10年来某种疾病的发病率在各年度的升降速度,宜绘制:","options":[{"key":"A","text":"普通线图"},{"key":"B","text":"直方图"},{"key":"C","text":"百分条图"},{"key":"D","text":"半对数线图"},{"key":"E","text":"直条图"}],"answer":"D","explanation":""},{"id":331,"q":"箱式图主要用于:","options":[{"key":"A","text":"说明不同事物某指标的差异"},{"key":"B","text":"表示事物内部各部分所占的比重"},{"key":"C","text":"描述一组或多组数据的分布特征"},{"key":"D","text":"描述研究指标的地理分布"},{"key":"E","text":"说明事物或现象动态变化的趋势"}],"answer":"C","explanation":""},{"id":332,"q":"比较某地区某年3种肿瘤疾病的死亡率,可绘制:","options":[{"key":"A","text":"直条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"半对数线图"},{"key":"E","text":"直方图"}],"answer":"A","explanation":""},{"id":333,"q":"图示某地某年男性的身高分布,宜绘制:","options":[{"key":"A","text":"条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"圆图"},{"key":"E","text":"直方图"}],"answer":"E","explanation":""},{"id":334,"q":"要反映某一城市连续五年甲肝发病率的变化情况,应选用:","options":[{"key":"A","text":"圆图"},{"key":"B","text":"半对数线图"},{"key":"C","text":"线图"},{"key":"D","text":"百分条图"},{"key":"E","text":"直方图"}],"answer":"C","explanation":""},{"id":335,"q":"图示某地某年流行性乙型脑炎患者的年龄分布,宜绘制:","options":[{"key":"A","text":"条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"圆图"},{"key":"E","text":"直方图"}],"answer":"E","explanation":""},{"id":336,"q":"表示某地区2003年SARS患者的职业构成,可以绘制:","options":[{"key":"A","text":"线图"},{"key":"B","text":"散点图"},{"key":"C","text":"单式条图"},{"key":"D","text":"直方图"},{"key":"E","text":"圆图"}],"answer":"E","explanation":""},{"id":337,"q":"比较各独立事物某指标的数值大小宜绘制:","options":[{"key":"A","text":"直条图"},{"key":"B","text":"直方图"},{"key":"C","text":"圆图"},{"key":"D","text":"普通线图"},{"key":"E","text":"半对数线图"}],"answer":"A","explanation":""},{"id":338,"q":"图示7岁男童体重与胸围的关系,宜绘制:","options":[{"key":"A","text":"条图"},{"key":"B","text":"半对数线图"},{"key":"C","text":"散点图"},{"key":"D","text":"箱式图"},{"key":"E","text":"直方图"}],"answer":"C","explanation":""},{"id":339,"q":"以下关于统计图的说法正确的是:","options":[{"key":"A","text":"标题写在图的上方"},{"key":"B","text":"所有统计图的坐标都必须从零点开始"},{"key":"C","text":"所有统计图的图例都必须位于标题和横标目之间"},{"key":"D","text":"条图和直方图的纵坐标中不能有折断"},{"key":"E","text":"横纵坐标有标目即可,不必要注明单位。"}],"answer":"D","explanation":""},{"id":340,"q":"比较某年某地各种原因所致的死亡顺位(死因构成)可选用:","options":[{"key":"A","text":"条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"半对数线图"},{"key":"E","text":"直方图"}],"answer":"B","explanation":""},{"id":341,"q":"表示某医院150例腰椎间盘突出症患者的年龄分布情况,最宜采用:","options":[{"key":"A","text":"条图"},{"key":"B","text":"线图"},{"key":"C","text":"直方图"},{"key":"D","text":"圆图"},{"key":"E","text":"散点图"}],"answer":"C","explanation":""},{"id":342,"q":"已知我国部分县1988年死因构成比资料如下:心脏病11.41﹪,损伤与中毒11.56﹪,恶性肿瘤15.04﹪,脑血管病16.07﹪,呼吸系统病25.70﹪,其他20.22﹪。为表达上述死因的构成的大小,根据此资料应绘制统计图为:","options":[{"key":"A","text":"线图"},{"key":"B","text":"圆形图"},{"key":"C","text":"直条图"},{"key":"D","text":"统计地图"},{"key":"E","text":"直方图"}],"answer":"B","explanation":""},{"id":343,"q":"比较新疆汉族、维族、哈族、回族以及其他民族糖尿病患病率,可绘制:","options":[{"key":"A","text":"条图"},{"key":"B","text":"百分条图"},{"key":"C","text":"线图"},{"key":"D","text":"半对数线图"},{"key":"E","text":"直方图"}],"answer":"A","explanation":""},{"id":344,"q":"比较某地三种传染病:乙脑、白喉、痢疾的发病率,选择:","options":[{"key":"A","text":"条图"},{"key":"B","text":"半对数线图"},{"key":"C","text":"线图"},{"key":"D","text":"百分条图"},{"key":"E","text":"直方图"}],"answer":"A","explanation":""},{"id":345,"q":"现测得20名糖尿病患者的血糖值和胰岛素水平值,若要图示二者的关系,最宜用:","options":[{"key":"A","text":"条图"},{"key":"B","text":"线图"},{"key":"C","text":"直方图"},{"key":"D","text":"圆图或百分比条图"},{"key":"E","text":"散点图"}],"answer":"E","explanation":""},{"id":346,"q":"表示某现象随连续型时间而变动的趋势宜用:","options":[{"key":"A","text":"直条图"},{"key":"B","text":"直方图"},{"key":"C","text":"圆图"},{"key":"D","text":"普通线图"},{"key":"E","text":"半对数线图"}],"answer":"D","explanation":""},{"id":347,"q":"表示某种疾病患者的职业分布(构成)情况宜用:","options":[{"key":"A","text":"直条图"},{"key":"B","text":"直方图"},{"key":"C","text":"圆图"},{"key":"D","text":"普通线图"},{"key":"E","text":"半对数线图"}],"answer":"C","explanation":""},{"id":348,"q":"甲乙丙三个地区的三种死因别死亡率,若用统计图表示出来可以选用:","options":[{"key":"A","text":"复式线图"},{"key":"B","text":"百分条图"},{"key":"C","text":"复式直条图"},{"key":"D","text":"直方图"},{"key":"E","text":"统计地图"}],"answer":"C","explanation":""},{"id":349,"q":"描述甲乙两家医院急性白血病患者构成是否相同,若用统计图表示出来可以选用:","options":[{"key":"A","text":"复式线图"},{"key":"B","text":"百分条图"},{"key":"C","text":"复式直条图"},{"key":"D","text":"直方图"},{"key":"E","text":"统计地图"}],"answer":"B","explanation":""},{"id":350,"q":"医院指标病死率常用比例基数是:","options":[{"key":"A","text":"10万分率"},{"key":"B","text":"千分率"},{"key":"C","text":"百分率"},{"key":"D","text":"万分率"},{"key":"E","text":"任意一种率"}],"answer":"C","explanation":""},{"id":351,"q":"计算某地肺癌发病率,常用比例基数是:","options":[{"key":"A","text":"10万分率"},{"key":"B","text":"百分率"},{"key":"C","text":"万分率"},{"key":"D","text":"千分率"},{"key":"E","text":"任意一种率"}],"answer":"A","explanation":""},{"id":352,"q":"对两地进行两个率的标准化法,最常用方法是:","options":[{"key":"A","text":"反推法"},{"key":"B","text":"间接法"},{"key":"C","text":"动态数列法"},{"key":"D","text":"直接法"},{"key":"E","text":"百分位数法"}],"answer":"D","explanation":""},{"id":353,"q":"下列哪一种指标不是动态数列指标:","options":[{"key":"A","text":"环比"},{"key":"B","text":"定基比"},{"key":"C","text":"构成比"},{"key":"D","text":"增长速度"},{"key":"E","text":"发展速度"}],"answer":"C","explanation":""},{"id":354,"q":"医学上常用千分率的指标是:","options":[{"key":"A","text":"有效率"},{"key":"B","text":"病死率"},{"key":"C","text":"治愈率"},{"key":"D","text":"出生率"},{"key":"E","text":"恶性肿瘤发病率"}],"answer":"D","explanation":""},{"id":355,"q":"人口出生率使用的比例基数是:","options":[{"key":"A","text":"百分率"},{"key":"B","text":"百分率及万分率"},{"key":"C","text":"万分率"},{"key":"D","text":"十万分率"},{"key":"E","text":"千分率"}],"answer":"E","explanation":""},{"id":356,"q":"动态数列常用指标有:","options":[{"key":"A","text":"构成比"},{"key":"B","text":"患病率"},{"key":"C","text":"百分率"},{"key":"D","text":"发病率"},{"key":"E","text":"增长速度"}],"answer":"E","explanation":""},{"id":357,"q":"下面哪种资料适合于计算相对数:","options":[{"key":"A","text":"身高"},{"key":"B","text":"脉搏"},{"key":"C","text":"血型"},{"key":"D","text":"食物中毒潜伏期"},{"key":"E","text":"血压"}],"answer":"C","explanation":""},{"id":358,"q":"粗死亡率使用的比例基数是:","options":[{"key":"A","text":"千分率"},{"key":"B","text":"百分率"},{"key":"C","text":"万分率"},{"key":"D","text":"十万分率"},{"key":"E","text":"千分率或万分率"}],"answer":"A","explanation":""},{"id":359,"q":"经调查得知甲、乙两地的恶性肿瘤的粗死亡率均为89.94/10万,但经过标准化后甲地恶性肿瘤的死亡率为93.52/10万,乙地为82.74/10万,发生此现象的最有可能的原因是:","options":[{"key":"A","text":"乙地的诊断技术水平更高"},{"key":"B","text":"甲地的恶性肿瘤防治工作做的比乙地好"},{"key":"C","text":"甲地的老年人口在总人口中所占的比例比乙地多"},{"key":"D","text":"甲地的男性人口在总人口中所占的比例比乙地多"},{"key":"E","text":"乙地的老年人口在总人口中所占的比例比甲地多"}],"answer":"E","explanation":""},{"id":360,"q":"下列指标不属于相对数的是:","options":[{"key":"A","text":"率"},{"key":"B","text":"构成比"},{"key":"C","text":"相对比"},{"key":"D","text":"均数"},{"key":"E","text":"比"}],"answer":"D","explanation":""},{"id":361,"q":"成年男性吸烟率是女性的10倍,该指标为:","options":[{"key":"A","text":"发病率"},{"key":"B","text":"构成比"},{"key":"C","text":"相对比"},{"key":"D","text":"患病率"},{"key":"E","text":"相对数"}],"answer":"C","explanation":""},{"id":363,"q":"某年初男性人口数与女性人口数的比值是:","options":[{"key":"A","text":"频数"},{"key":"B","text":"率"},{"key":"C","text":"构成比"},{"key":"D","text":"相对比"},{"key":"E","text":"以上都不是"}],"answer":"D","explanation":""},{"id":364,"q":"描述计数资料的相对数主要包括:","options":[{"key":"A","text":"构成比、率、相对比"},{"key":"B","text":"百分率、千分率、万分率"},{"key":"C","text":"百分比、千分比、万分比"},{"key":"D","text":"发病率、患病率、感染率"},{"key":"E","text":"出生率、死亡率、增加率"}],"answer":"A","explanation":""},{"id":365,"q":"构成比具有的特点为:","options":[{"key":"A","text":"各个组成部分的构成比之和等于100%或1"},{"key":"B","text":"各个组成部分的构成比之和小于100%或1"},{"key":"C","text":"各个组成部分的构成比之和大于100%或1"},{"key":"D","text":"各个组成部分的构成比之和大于或小于100%或1"},{"key":"E","text":"以上都不对"}],"answer":"A","explanation":""},{"id":366,"q":"实际工作中,容易将构成比当成率分析的主要原因可能是:","options":[{"key":"A","text":"构成比较率容易计算"},{"key":"B","text":"构成比较率难计算"},{"key":"C","text":"构成比与率的计算方法一样"},{"key":"D","text":"构成比用得较多"},{"key":"E","text":"计算构成比的原始资料较率容易得到"}],"answer":"E","explanation":""},{"id":367,"q":"某地1999年肝炎发病率是2000年的1.25倍,此指标属于:","options":[{"key":"A","text":"构成比"},{"key":"B","text":"相对比"},{"key":"C","text":"平均数"},{"key":"D","text":"率"},{"key":"E","text":"发展速度"}],"answer":"B","explanation":""},{"id":368,"q":"说明事物在一个较长时期中逐年平均发展变化的程度的是:","options":[{"key":"A","text":"定基比"},{"key":"B","text":"环比"},{"key":"C","text":"平均发展速度"},{"key":"D","text":"增长速度"},{"key":"E","text":"绝对增长量"}],"answer":"C","explanation":""},{"id":369,"q":"关于相对数,下列哪一个说法是不正确的:","options":[{"key":"A","text":"相对数是两个有联系的指标之比"},{"key":"B","text":"常用相对数包括相对比,率与构成比"},{"key":"C","text":"计算相对数时要求分母要足够大"},{"key":"D","text":"率与构成比虽然意义不同,但性质相近,经常可以混用"},{"key":"E","text":"相对数是分类资料常用的描述性统计指标"}],"answer":"D","explanation":""},{"id":370,"q":"相对比的特点:","options":[{"key":"A","text":"一定要小于100%"},{"key":"B","text":"一定要大于100%"},{"key":"C","text":"可小于100%也可大于100%"},{"key":"D","text":"各相对比的和等于100%"},{"key":"E","text":"以上都不是"}],"answer":"C","explanation":""},{"id":371,"q":"表示某一事物内部各部分所占的比重:","options":[{"key":"A","text":"频率指标"},{"key":"B","text":"构成比"},{"key":"C","text":"相对比"},{"key":"D","text":"定比"},{"key":"E","text":"环比"}],"answer":"B","explanation":""},{"id":372,"q":"说明某现象发生的频率或严重程度可选用:","options":[{"key":"A","text":"相对比"},{"key":"B","text":"绝对数"},{"key":"C","text":"构成比"},{"key":"D","text":"率"},{"key":"E","text":"环比"}],"answer":"D","explanation":""},{"id":373,"q":"某医院某年住院病人中胃癌患者占5%,此指标属于:","options":[{"key":"A","text":"构成比"},{"key":"B","text":"相对比"},{"key":"C","text":"平均数"},{"key":"D","text":"率"},{"key":"E","text":"发展速度"}],"answer":"A","explanation":""},{"id":374,"q":"下列哪种说法是错误的:","options":[{"key":"A","text":"计算相对数尤其是率时应有足够数量的观察单位数或观察次数"},{"key":"B","text":"分析大样本数据时可以构成比代替率"},{"key":"C","text":"应分别将分子和分母合计求合计率或平均率"},{"key":"D","text":"相对数的比较应注意其可比性"},{"key":"E","text":"样本率或构成比的比较应作假设检验"}],"answer":"B","explanation":""},{"id":375,"q":"说明事物在一定时期增长的绝对值是:","options":[{"key":"A","text":"定基比"},{"key":"B","text":"环比"},{"key":"C","text":"平均发展速度"},{"key":"D","text":"增长速度"},{"key":"E","text":"绝对增长量"}],"answer":"E","explanation":""},{"id":376,"q":"描述计数资料的主要指标是:","options":[{"key":"A","text":"平均数"},{"key":"B","text":"相对数"},{"key":"C","text":"标准差"},{"key":"D","text":"标准误"},{"key":"E","text":"变异系数"}],"answer":"B","explanation":""},{"id":377,"q":"关于动态数列的叙述,下列哪项是错误的:","options":[{"key":"A","text":"动态数列是按照一定的时间顺序,将一系列描述事物的统计指标依次排列起来"},{"key":"B","text":"动态数列可以观察和比较该事物在时间上的变化和发展趋势"},{"key":"C","text":"动态数列中描述事物的统计指标只能是相对数"},{"key":"D","text":"动态数列分析是建立在相对比基础上的"},{"key":"E","text":"动态数列分析采用定基比和环比两种方式"}],"answer":"C","explanation":""},{"id":378,"q":"某病患者120人,其中男性114人,女性6人,分别占95%与5%,则结论为:","options":[{"key":"A","text":"该病男性易得"},{"key":"B","text":"该病女性易得"},{"key":"C","text":"该病男性、女性易患程度相等"},{"key":"D","text":"尚不能得出结论"},{"key":"E","text":"根据该资料可计算出男女性的患病率"}],"answer":"D","explanation":""},{"id":379,"q":"某医院出院病人2050名农民中,患慢性肺心病265例,其中女性农民患者死亡15例,该医院女性农民肺心病病死率为:","options":[{"key":"A","text":"0.73%"},{"key":"B","text":"12.93%"},{"key":"C","text":"5.66%"},{"key":"D","text":"6.78%"},{"key":"E","text":"据已知条件无法计算"}],"answer":"E","explanation":""},{"id":380,"q":"卡介苗麻疹疫苗接种后血清阳转率的分母应为:","options":[{"key":"A","text":"肺结核患者人数"},{"key":"B","text":"肺结核易感人数"},{"key":"C","text":"获得肺结核终身免疫人数"},{"key":"D","text":"卡介苗接种人数"},{"key":"E","text":"卡介苗接种后的阳转人数"}],"answer":"D","explanation":""},{"id":381,"q":"定基比与环比指标是:","options":[{"key":"A","text":"构成比"},{"key":"B","text":"平均数"},{"key":"C","text":"频率"},{"key":"D","text":"绝对数"},{"key":"E","text":"相对比"}],"answer":"E","explanation":""},{"id":382,"q":"关于构成比的叙述,下列哪项是正确的:","options":[{"key":"A","text":"反映某现象发生的强度"},{"key":"B","text":"反映某事物内部各部分占全部构成的比重"},{"key":"C","text":"既反映某现象发生的强度,也反映某事物内部各部分占全部构成的比重"},{"key":"D","text":"表示两个同类指标的比"},{"key":"E","text":"表示某一现象在时间顺序的排列"}],"answer":"B","explanation":""},{"id":383,"q":"今有某医院各科患者与死亡资料,拟计算下列指标:科别 患者数 死亡数外科 1500 180 内科 500 20 传染科 400 24 合计 2400 224 则各科患者构成比是:","options":[{"key":"A","text":"各科患者数/患者总数"},{"key":"B","text":"各科病死数/病死总数"},{"key":"C","text":"各科病死数/各科患者数"},{"key":"D","text":"各科病死数/总人口数"},{"key":"E","text":"病死数合计/患者数合计"}],"answer":"A","explanation":""},{"id":384,"q":"反映疾病死亡严重程度的指标是:","options":[{"key":"A","text":"发病率"},{"key":"B","text":"患病率"},{"key":"C","text":"治愈率"},{"key":"D","text":"病死率"},{"key":"E","text":"死亡率"}],"answer":"D","explanation":""},{"id":385,"q":"某一期间内(1年)患某病者因该病死亡的百分比是:","options":[{"key":"A","text":"频数"},{"key":"B","text":"率"},{"key":"C","text":"构成比"},{"key":"D","text":"相对比"},{"key":"E","text":"以上都不是"}],"answer":"B","explanation":""},{"id":386,"q":"计算麻疹疫苗接种后血清检查的阳转率,分母为:","options":[{"key":"A","text":"麻疹易感人群"},{"key":"B","text":"麻疹患者数"},{"key":"C","text":"麻疹疫苗接种人数"},{"key":"D","text":"麻疹疫苗接种后的阳转人数"},{"key":"E","text":"麻疹疫苗接种后的阴性人数"}],"answer":"C","explanation":""},{"id":387,"q":"直线相关的应用条件是","options":[{"key":"A","text":"有极端值的数据"},{"key":"B","text":"开口数据"},{"key":"C","text":"等级数据"},{"key":"D","text":"分类数据"},{"key":"E","text":"正态分布数据"}],"answer":"E","explanation":""},{"id":388,"q":"Pearson 直线相关系数r=0.36,经假设检验P<0.05,则有","options":[{"key":"A","text":"两变量中度相关"},{"key":"B","text":"两变量高度相关"},{"key":"C","text":"两变量低度相关"},{"key":"D","text":"两变量弱相关"},{"key":"E","text":"两变量无相关"}],"answer":"C","explanation":""},{"id":389,"q":"对简单回归模型进行显著性检验的目的是对哪项作统计推断?","options":[{"key":"A","text":"样本斜率"},{"key":"B","text":"总体斜率"},{"key":"C","text":"样本均数"},{"key":"D","text":"总体均数"},{"key":"E","text":"总体截距"}],"answer":"B","explanation":""},{"id":390,"q":"Spearman相关系数rs=0.75,经假设检验P<0.05,则有:","options":[{"key":"A","text":"可以认为两变量高度正相关"},{"key":"B","text":"可以认为两变量中度正相关"},{"key":"C","text":"可以认为两变量低度正相关"},{"key":"D","text":"可以认为两变量弱相关"},{"key":"E","text":"可以认为两变量无相关"}],"answer":"A","explanation":""},{"id":391,"q":"用最小二乘法确定直线回归方程的原则是各观察点:","options":[{"key":"A","text":"距回归直线的纵向距离相等"},{"key":"B","text":"距回归直线的纵向距离的平方和最小"},{"key":"C","text":"距回归直线的垂直距离相等"},{"key":"D","text":"距回归直线的垂直距离的平方和最小"},{"key":"E","text":"以上均不正确"}],"answer":"B","explanation":""},{"id":392,"q":"直线相关分析,相关系数r经检验无统计学意义,结论是:","options":[{"key":"A","text":"可以认为完全无关系"},{"key":"B","text":"可以认为有直线相关关系"},{"key":"C","text":"还不能认为有直线相关关系"},{"key":"D","text":"再进行直线回归分析"},{"key":"E","text":"可以认为一定有曲线关系"}],"answer":"C","explanation":""},{"id":393,"q":"大样本含量两正态随机变量的相关系数r=0.15,经假设检验P<0.05,则仍然:","options":[{"key":"A","text":"还不能认为两变量高度相关"},{"key":"B","text":"还不能认为两变量中度相关"},{"key":"C","text":"还不能认为两变量低度相关"},{"key":"D","text":"还不能认为两变量弱相关"},{"key":"E","text":"还不能认为两变量存在直线相关关系"}],"answer":"E","explanation":""},{"id":394,"q":"直线回归中,如果自变量X乘以一个不为0或1的常数,则有:","options":[{"key":"A","text":"截距改变"},{"key":"B","text":"回归系数改变"},{"key":"C","text":"两者都改变"},{"key":"D","text":"两者都不改变"},{"key":"E","text":"以上情况都可能"}],"answer":"B","explanation":""},{"id":395,"q":"在正态双变量(x,y)的相关与回归分析中描述不正确的是:","options":[{"key":"A","text":"r值增加,b值一定增加"},{"key":"B","text":"对r假设检验与对b的假设检验等价"},{"key":"C","text":"r>0时,b>0"},{"key":"D","text":"r<0时,b<0"},{"key":"E","text":"r=0时,b=0"}],"answer":"A","explanation":""},{"id":396,"q":"由样本求得相关系数r=0.98,且假设检验P<0.01,下列叙述中错误的是:","options":[{"key":"A","text":"可认为两变量之间有高度相关关系"},{"key":"B","text":"r来自高度相关的总体"},{"key":"C","text":"对应的总体相关系数大于0"},{"key":"D","text":"对应的总体相关系数小于0"},{"key":"E","text":"可认为两变量之间有正相关关系"}],"answer":"D","explanation":""},{"id":397,"q":"同一资料进行直线相关与回归分析,下列叙述中错误的是:","options":[{"key":"A","text":"r与b的符号一致"},{"key":"B","text":"|r|越大,|b|不一定越大"},{"key":"C","text":"r没有单位"},{"key":"D","text":"b的单位是(x的单位/y的单位)"},{"key":"E","text":"r=0,b=0"}],"answer":"D","explanation":""},{"id":398,"q":"直线相关分析中,若总体相关系数ρ>0,则从该总体中抽取的样本相关系数:","options":[{"key":"A","text":"大于0"},{"key":"B","text":"小于0"},{"key":"C","text":"等于0"},{"key":"D","text":"可能大于0,小于0或等于0"},{"key":"E","text":"等于1"}],"answer":"D","explanation":""},{"id":399,"q":"样本相关系数r=0时,下列叙述中错误的是:","options":[{"key":"A","text":"需对总体相关系数进行假设检验"},{"key":"B","text":"应先绘制散点图"},{"key":"C","text":"两变量的关系不能确定"},{"key":"D","text":"两变量间必然存在某种曲线关系"},{"key":"E","text":"两变量间不存在直线关系,但不排除存在某种曲线关系"}],"answer":"D","explanation":""},{"id":400,"q":"散点呈直线趋势,当x减小而y增加时,可初步判断两变量为:","options":[{"key":"A","text":"正的直线相关关系"},{"key":"B","text":"无直线相关关系"},{"key":"C","text":"非线性关系"},{"key":"D","text":"负的直线相关关系"},{"key":"E","text":"无法确定"}],"answer":"D","explanation":""},{"id":401,"q":"在秩相关分析中,下列描述不正确的是:","options":[{"key":"A","text":"适用于不满足双变量正态分布资料"},{"key":"B","text":"等级资料的相关分析"},{"key":"C","text":"分布资料不明"},{"key":"D","text":"四格表资料的关联性分析"},{"key":"E","text":"秩相关系数的解释与简单相关系数类似"}],"answer":"D","explanation":""},{"id":402,"q":"直线相关分析可用于分析下列哪个选项中的变量间数量关系:","options":[{"key":"A","text":"性别与体重"},{"key":"B","text":"性别与血型"},{"key":"C","text":"体重与体表面积"},{"key":"D","text":"母亲职业与儿童智商"},{"key":"E","text":"工龄与患病率"}],"answer":"C","explanation":""},{"id":403,"q":"对某样本的相关系数r进行假设检验,t值< t界值,则 结论为:","options":[{"key":"A","text":"两变量的差别无统计意义"},{"key":"B","text":"两变量存在直线相关关系"},{"key":"C","text":"两变量肯定不存在直线相关关系"},{"key":"D","text":"两变量存在直线相关关系的可能性小于5%"},{"key":"E","text":"就本资料而言,尚不能认为两变量存在直线关系"}],"answer":"E","explanation":""},{"id":404,"q":"直线相关分析是为了:","options":[{"key":"A","text":"研究两组变量间的关系"},{"key":"B","text":"研究双变量间的直线依存变化关系"},{"key":"C","text":"研究两组双变量间的差别"},{"key":"D","text":"研究双变量间的直线相关关系"},{"key":"E","text":"研究双变量间的直线关系"}],"answer":"D","explanation":""},{"id":405,"q":"直线相关分析中,对相关系数作假设检验,其目的是:","options":[{"key":"A","text":"检验相关系数r是否等于0"},{"key":"B","text":"推断两变量间是否存在直线相关关系"},{"key":"C","text":"检验两总体相关系数是否相等"},{"key":"D","text":"推断两变量间相关方向"},{"key":"E","text":"推断两变量间密切程度"}],"answer":"B","explanation":""},{"id":406,"q":"在相关分析中,若散点分布在一条直线上,则有:","options":[{"key":"A","text":"r=1"},{"key":"B","text":"r=0"},{"key":"C","text":"b=1"},{"key":"D","text":"b=0"},{"key":"E","text":"a=0"}],"answer":"A","explanation":""},{"id":407,"q":"对相关系数假设检验,无效假设是:","options":[{"key":"A","text":"ρ=0"},{"key":"B","text":"ρ≠0"},{"key":"C","text":"ρ>0"},{"key":"D","text":"ρ<0"},{"key":"E","text":"ρ≥0"}],"answer":"A","explanation":""},{"id":408,"q":"在秩相关的分析中,下列叙述不正确的是:","options":[{"key":"A","text":"适用于不服从双变量正态分布的资料"},{"key":"B","text":"总体分布类型未知的资料宜计算rs"},{"key":"C","text":"│rs│≤1"},{"key":"D","text":"查rs界值表时,计算的统计量│rs│越小,所对应的P越小"},{"key":"E","text":"适用于等级资料"}],"answer":"D","explanation":""},{"id":409,"q":"求得相关系数r≠0,下列说法正确的是:","options":[{"key":"A","text":"两变量间有相关关系"},{"key":"B","text":"两变量间无相关关系"},{"key":"C","text":"对r值作假设检验后才能推论"},{"key":"D","text":"r越大越有意义"},{"key":"E","text":"r越小越有意义"}],"answer":"C","explanation":""},{"id":410,"q":"若分析肺活量和身高之间的数量关系,拟用身高值预测肺活量值,亦采用:","options":[{"key":"A","text":"简单相关分析"},{"key":"B","text":"秩相关分析"},{"key":"C","text":"直线回归分析"},{"key":"D","text":"方差分析"},{"key":"E","text":"多重线性回归分析"}],"answer":"C","explanation":""},{"id":411,"q":"简单相关分析,假设检验中无效假设为:","options":[{"key":"A","text":"两变量间相互独立"},{"key":"B","text":"两变量间存在线性关系"},{"key":"C","text":"两变量间存在相互关系"},{"key":"D","text":"两变量间相关关系密切"},{"key":"E","text":"两变量间相关关系不密切"}],"answer":"A","explanation":""},{"id":412,"q":"回归系数的假设检验,其备择假设H1是:","options":[{"key":"A","text":"β=1"},{"key":"B","text":"β≠0"},{"key":"C","text":"β>0"},{"key":"D","text":"β<0"},{"key":"E","text":"β=0"}],"answer":"B","explanation":""},{"id":413,"q":"建立直线回归方程中,下列说法错误的是:","options":[{"key":"A","text":"决定直线的为a和b"},{"key":"B","text":"直线必须通过 x的均数与y的均数对应的点"},{"key":"C","text":"直线向左延长与纵轴相交,其交点的纵坐标=a"},{"key":"D","text":"直线的斜率为b"},{"key":"E","text":"画线时取两X值应是尽量远的两点"}],"answer":"E","explanation":""},{"id":414,"q":"求得Y关于X的线性回归方程后,对回归系数作假设检验的目的是对(B)作出统计推断:","options":[{"key":"A","text":"样本斜率"},{"key":"B","text":"总体斜率"},{"key":"C","text":"样本均数"},{"key":"D","text":"总体均数"},{"key":"E","text":"样本分布"}],"answer":"B","explanation":""},{"id":415,"q":"研究凝血时间和凝血酶元浓度之间有无关系应用:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"u检验"},{"key":"C","text":"F检验"},{"key":"D","text":"相关分析"},{"key":"E","text":"回归分析"}],"answer":"D","explanation":""},{"id":416,"q":"最小二乘估计方法的本质要求是:","options":[{"key":"A","text":"各点到直线的垂直距离的和最小"},{"key":"B","text":"各点到x轴的纵向距离的平方和最大"},{"key":"C","text":"各点到直线的垂直距离的平方和最小"},{"key":"D","text":"各点到直线的纵向距离的平方和最小"},{"key":"E","text":"各点到直线的纵向距离的平方和最大"}],"answer":"D","explanation":""},{"id":417,"q":"对于一组服从双变量正态分布的资料,经直线相关分析得相关系数为正,若对该资料拟合回归直线,其回归系数:","options":[{"key":"A","text":"b>0"},{"key":"B","text":"b<0"},{"key":"C","text":"b=0"},{"key":"D","text":"-1< b <1"},{"key":"E","text":"b>1"}],"answer":"A","explanation":""},{"id":418,"q":"在简单线性回归分析中,Sy·x(又称剩余标准差)反映:","options":[{"key":"A","text":"应变量Y的变异度"},{"key":"B","text":"自变量X的变异度"},{"key":"C","text":"扣除X影响后Y的变异度"},{"key":"D","text":"扣除Y影响后X的变异度"},{"key":"E","text":"回归系数b的变异度"}],"answer":"C","explanation":""},{"id":419,"q":"关于Y=a+bX中的|b|,下列描述不正确的是:","options":[{"key":"A","text":"b是回归直线的斜率"},{"key":"B","text":"b>0表示直线从左下走向右上"},{"key":"C","text":"b<0表示直线从左上走向右下"},{"key":"D","text":"|b|越大。则回归直线越陡"},{"key":"E","text":"b=0表示直线通过原点"}],"answer":"E","explanation":""},{"id":420,"q":"研究身高和体重之间是否有数量依存关系宜采用:","options":[{"key":"A","text":"t检验"},{"key":"B","text":"u检验"},{"key":"C","text":"F检验"},{"key":"D","text":"相关分析"},{"key":"E","text":"回归分析"}],"answer":"E","explanation":""},{"id":421,"q":"当偏态分布双变量中相同秩次较多时,表示它们的相互关系宜计算:","options":[{"key":"A","text":"a"},{"key":"B","text":"b"},{"key":"C","text":"r"},{"key":"D","text":"rs"},{"key":"E","text":"校正rs"}],"answer":"E","explanation":""},{"id":422,"q":"检验总体直线回归方程是否有统计学意义,可采用:","options":[{"key":"A","text":"Z检验或χ2检验"},{"key":"B","text":"方差分析或t检验"},{"key":"C","text":"方差分析或秩和检验"},{"key":"D","text":"Z检验或t检验"},{"key":"E","text":"以上都不对"}],"answer":"B","explanation":""},{"id":423,"q":"表示正态分布双变量间有无关系及其密切程度的统计量是:","options":[{"key":"A","text":"a"},{"key":"B","text":"b"},{"key":"C","text":"r"},{"key":"D","text":"rs"},{"key":"E","text":"校正rs"}],"answer":"C","explanation":""},{"id":424,"q":"在双变量数量依存变化的直线关系中,表示其直线斜率的是:","options":[{"key":"A","text":"a"},{"key":"B","text":"b"},{"key":"C","text":"r"},{"key":"D","text":"rs"},{"key":"E","text":"校正rs"}],"answer":"B","explanation":""},{"id":425,"q":"探讨男性腰围与腹腔内脂肪面的关系,对20名男性志愿受试者测量其腰围(cm),并采用核磁共振成像法测量其腹腔内脂肪面积(cm2),建立有腰围估计腹腔内脂肪面积的回归模型,回归系数为b=2.110,则回归系数的解释为:","options":[{"key":"A","text":"对于健康成年人,腰围每增加1cm,腹腔内脂肪面积平均增加2.110 cm2"},{"key":"B","text":"对于健康成年人,腰围增加1cm,腹腔内脂肪面积一定增加2.110 cm2"},{"key":"C","text":"对于健康成年人,腰围越大,腹腔内脂肪面积一定越大"},{"key":"D","text":"对于健康成年男性,腰围每增加1cm,腹腔内脂肪面积平均增加2.110 cm2"},{"key":"E","text":"对于健康成年男性,腰围增加1cm,腹腔内脂肪面积一定增加2.110 cm2"}],"answer":"D","explanation":""}];
+  </script>
+  <script>(() => {
+  "use strict";
+
+  const DATA = Array.isArray(window.__QUESTIONS__) ? window.__QUESTIONS__ : [];
+  const META = window.__QUIZ_META__ || {};
+  const TOTAL = DATA.length;
+  const state = { order: [], index: 0, completed: false };
+  const $ = (id) => document.getElementById(id);
+  const ESC_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  const esc = (value) => String(value == null ? "" : value).replace(/[&<>"']/g, (ch) => ESC_MAP[ch]);
+  const pretty = (value) => esc(value)
+    .replace(/χ2|Χ2/g, "χ²")
+    .replace(/σ2/g, "σ²")
+    .replace(/λ2/g, "λ²")
+    .replace(/H0/g, "H₀")
+    .replace(/H1/g, "H₁");
+
+  function shuffle(list) {
+    const result = list.slice();
+    for (let i = result.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+
+  function makeRound() {
+    return shuffle(DATA).map((q) => ({
+      ...q,
+      selected: null,
+      submitted: false,
+      correct: null,
+    }));
+  }
+
+  function newRound(notify) {
+    state.order = makeRound();
+    state.index = 0;
+    state.completed = false;
+    updateStats();
+    render();
+    if (notify) toast("已重新打乱");
+  }
+
+  function resetAnswers(notify) {
+    state.order.forEach((q) => {
+      q.selected = null;
+      q.submitted = false;
+      q.correct = null;
+    });
+    state.index = 0;
+    state.completed = false;
+    closeSheet();
+    updateStats();
+    render();
+    if (notify) toast("已重置本轮作答");
+  }
+
+  const answeredCount = () => state.order.filter((q) => q.submitted).length;
+  const correctCount = () => state.order.filter((q) => q.submitted && q.correct).length;
+
+  function updateStats() {
+    const answered = answeredCount();
+    const correct = correctCount();
+    const wrong = answered - correct;
+    const accuracy = answered === 0 ? "—" : `${Math.round((correct / answered) * 100)}%`;
+    $("statAnswered").textContent = String(answered);
+    $("statCorrect").textContent = String(correct);
+    $("statWrong").textContent = String(wrong);
+    $("statAccuracy").textContent = accuracy;
+    const percent = TOTAL === 0 ? 0 : (answered / TOTAL) * 100;
+    $("progressBar").style.width = `${percent}%`;
+    $("progressTrack").setAttribute("aria-valuenow", String(Math.round(percent)));
+    if (!$("sheet").hidden) renderSheet();
+  }
+
+  function optionClass(q, option) {
+    const classes = ["option"];
+    if (!q.submitted && q.selected === option.key) classes.push("selected");
+    if (q.submitted) {
+      if (option.key === q.answer) classes.push("is-correct");
+      else if (option.key === q.selected) classes.push("is-wrong");
+    }
+    return classes.join(" ");
+  }
+
+  function render() {
+    if (state.completed) {
+      renderCompletion();
+      return;
+    }
+    const q = state.order[state.index];
+    if (!q) return;
+
+    const options = q.options.map((o) => `
+      <button type="button" class="${optionClass(q, o)}" data-key="${esc(o.key)}"
+        aria-pressed="${q.selected === o.key}" ${q.submitted ? "disabled" : ""}>
+        <span class="option-key">${esc(o.key)}</span>
+        <span class="option-text">${pretty(o.text)}</span>
+      </button>`).join("");
+
+    let feedback = "";
+    if (q.submitted) {
+      const correctOption = q.options.find((o) => o.key === q.answer);
+      const answerText = correctOption ? `${q.answer}. ${correctOption.text}` : q.answer;
+      const explanation = q.explanation
+        ? `<div class="explanation">解析：${pretty(q.explanation)}</div>`
+        : "";
+      feedback = `
+        <div class="feedback ${q.correct ? "correct" : "wrong"}" role="status">
+          <div class="feedback-title">${q.correct ? "✓ 回答正确" : "✗ 回答错误"}</div>
+          <div class="answer-line">正确答案：<strong>${pretty(answerText)}</strong></div>
+          ${explanation}
+        </div>`;
+    }
+
+    const actions = q.submitted
+      ? `<button type="button" class="btn primary" id="nextBtn">${state.index === TOTAL - 1 ? "查看答题卡" : "下一题"}</button>
+         <button type="button" class="btn ghost" id="prevBtn" ${state.index === 0 ? "disabled" : ""}>上一题</button>
+         <span class="spacer"></span>
+         <span class="hint">答对 ${correctCount()} / 已答 ${answeredCount()} 题</span>`
+      : `<button type="button" class="btn primary" id="submitBtn" ${q.selected ? "" : "disabled"}>提交答案</button>
+         <button type="button" class="btn ghost" id="prevBtn" ${state.index === 0 ? "disabled" : ""}>上一题</button>
+         <span class="spacer"></span>
+         <span class="hint">快捷键：A–E / 1–5 选择，Enter 提交</span>`;
+
+    $("questionCard").innerHTML = `
+      <div class="q-head">
+        <span class="q-index">第 ${state.index + 1} / ${TOTAL} 题</span>
+        <span class="q-origin">原题 #${q.id}</span>
+      </div>
+      <p class="q-text">${pretty(q.q)}</p>
+      <div class="options" role="group" aria-label="选项">${options}</div>
+      ${feedback}
+      <div class="actions">${actions}</div>`;
+
+    $("questionCard").querySelectorAll(".option").forEach((button) => {
+      button.addEventListener("click", () => choose(button.dataset.key));
+    });
+    if ($("submitBtn")) $("submitBtn").addEventListener("click", submit);
+    if ($("nextBtn")) $("nextBtn").addEventListener("click", next);
+    if ($("prevBtn")) $("prevBtn").addEventListener("click", previous);
+  }
+
+  function choose(key) {
+    const q = state.order[state.index];
+    if (!q || q.submitted) return;
+    q.selected = key;
+    $("questionCard").querySelectorAll(".option").forEach((button) => {
+      const active = button.dataset.key === key;
+      button.classList.toggle("selected", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    if ($("submitBtn")) $("submitBtn").disabled = false;
+  }
+
+  function submit() {
+    const q = state.order[state.index];
+    if (!q || q.submitted || !q.selected) return;
+    q.submitted = true;
+    q.correct = q.selected === q.answer;
+    updateStats();
+    render();
+  }
+
+  function next() {
+    if (state.completed) return;
+    if (state.index < TOTAL - 1) {
+      state.index += 1;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (answeredCount() < TOTAL) {
+      openSheet();
+      toast(`还有 ${TOTAL - answeredCount()} 题未答`);
+      return;
+    }
+    state.completed = true;
+    updateStats();
+    render();
+  }
+
+  function previous() {
+    if (state.completed) {
+      state.completed = false;
+      state.index = TOTAL - 1;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    if (state.index > 0) {
+      state.index -= 1;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  function renderCompletion() {
+    const answered = answeredCount();
+    const correct = correctCount();
+    const accuracy = answered === 0 ? 0 : Math.round((correct / answered) * 100);
+    $("questionCard").innerHTML = `
+      <div class="completion">
+        <div class="mark">✓</div>
+        <h2>本轮完成</h2>
+        <p>已答 ${answered} / ${TOTAL} 题 · 答对 ${correct} 题 · 正确率 ${accuracy}%</p>
+        <div class="actions">
+          <button type="button" class="btn primary" id="againBtn">重新打乱再来一轮</button>
+          <button type="button" class="btn ghost" id="reviewBtn">查看答题卡</button>
+          <button type="button" class="btn ghost" id="lastBtn">回到最后一题</button>
+        </div>
+      </div>`;
+    $("againBtn").addEventListener("click", () => {
+      if (confirm("重新打乱会清空本轮作答，继续？")) newRound(true);
+    });
+    $("reviewBtn").addEventListener("click", openSheet);
+    $("lastBtn").addEventListener("click", () => {
+      state.completed = false;
+      state.index = TOTAL - 1;
+      render();
+    });
+  }
+
+  function renderSheet() {
+    $("sheetGrid").innerHTML = state.order.map((q, i) => {
+      const classes = ["sheet-cell"];
+      if (q.submitted && q.correct) classes.push("correct");
+      if (q.submitted && !q.correct) classes.push("wrong");
+      if (!state.completed && i === state.index) classes.push("current");
+      return `<button type="button" class="${classes.join(" ")}" data-index="${i}"
+        aria-label="第 ${i + 1} 题${q.submitted ? (q.correct ? "，答对" : "，答错") : "，未答"}"
+        aria-current="${!state.completed && i === state.index ? "true" : "false"}">${i + 1}</button>`;
+    }).join("");
+
+    $("sheetGrid").querySelectorAll(".sheet-cell").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.index = Number(button.dataset.index);
+        state.completed = false;
+        closeSheet();
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+  }
+
+  function openSheet() {
+    renderSheet();
+    $("sheet").hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSheet() {
+    $("sheet").hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  let toastTimer = 0;
+  function toast(message) {
+    const node = $("toast");
+    node.textContent = message;
+    node.classList.add("show");
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => node.classList.remove("show"), 1800);
+  }
+
+  function confirmReset() {
+    if (answeredCount() > 0 && !confirm("清空本轮作答？")) return;
+    resetAnswers(true);
+  }
+
+  function confirmShuffle() {
+    if (answeredCount() > 0 && !confirm("重新打乱会清空本轮作答，继续？")) return;
+    newRound(true);
+  }
+
+  function bindChrome() {
+    $("sheetBtn").addEventListener("click", openSheet);
+    $("closeSheet").addEventListener("click", closeSheet);
+    $("shuffleBtn").addEventListener("click", confirmShuffle);
+    $("resetBtn").addEventListener("click", confirmReset);
+    $("sheet").addEventListener("click", (event) => {
+      if (event.target === $("sheet")) closeSheet();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!$("sheet").hidden) {
+        if (event.key === "Escape") closeSheet();
+        return;
+      }
+      if (event.target instanceof HTMLElement &&
+          ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName)) return;
+      if (event.key === "Enter" && event.target instanceof HTMLElement &&
+          event.target.closest("button")) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        previous();
+        return;
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        next();
+        return;
+      }
+      if (event.key === "Enter") {
+        event.preventDefault();
+        const q = state.order[state.index];
+        if (q && q.submitted) next();
+        else submit();
+        return;
+      }
+      const numeric = { "1": "A", "2": "B", "3": "C", "4": "D", "5": "E" };
+      const key = numeric[event.key] || (/^[a-eA-E]$/.test(event.key) ? event.key.toUpperCase() : null);
+      if (key) {
+        event.preventDefault();
+        choose(key);
+      }
+    });
+  }
+
+  function init() {
+    if (TOTAL === 0) {
+      $("questionCard").textContent = "题库为空。";
+      return;
+    }
+    $("totalLabel").textContent = String(TOTAL);
+    $("totalLabelMeta").textContent = String(TOTAL);
+    $("removedLabel").textContent = String(META.removed || 0);
+    $("originalLabel").textContent = String(META.original || 0);
+    bindChrome();
+    newRound(false);
+    updateStats();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
