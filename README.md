@@ -1,6 +1,10 @@
 # 医学统计学 · 选择题练习
 
-一个单文件网页，直接双击 `index.html` 就能做题。
+公开网址：**https://feiwu-github.github.io/medstat-quiz/**
+
+手机或平板可以直接打开这个网址，不需要电脑；建议在 Safari/Chrome 里选择「添加到主屏幕」，用起来更接近一个 App。
+
+一个单文件网页，直接双击 `index.html` 也能做题。
 
 ## 使用
 
